@@ -12,7 +12,7 @@ const box=(min,max,name,objects)=>({min:R(min),max:R(max),...(name?{name}:{}),..
 const norm=v=>{const l=Math.hypot(...v);return v.map(x=>r(x/l));},cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
 // Hand orientation presets from the face normal n (pointing toward the player).
 const pose={
- pull:(n,grip='grip')=>({gesture:'pull',grip,palm:norm(n.map(x=>-x)),fingers:norm([-n[0]*.25,-1,-n[2]*.25])}),
+ pull:(n,grip='hook')=>({gesture:'pull',grip,palm:norm(n.map(x=>-x)),fingers:norm([-n[0]*.25,-1,-n[2]*.25])}),
  swing:n=>{const palm=n.map(x=>-x);return {gesture:'swing',grip:'grip',palm:norm(palm),fingers:norm(cross(palm,[0,1,0])),follow:true};},
  slide:n=>{const palm=n.map(x=>-x);return {gesture:'slide',grip:'grip',palm:norm(palm),fingers:norm(cross(palm,[0,1,0]))};},
  turn:(fingers,follow=true)=>({gesture:'turn',grip:'pinch',palm:[0,-1,0],fingers:norm(fingers),follow}),

@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "passed": true,
   "checks": [
     "scene.json semantic parts are unchanged in count, names, positions and sizes",

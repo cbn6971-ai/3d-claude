@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "parameter_file": "model/parameters.json",
   "parameters": 88,
   "geometric_nodes": 244,
@@ -17,17 +17,17 @@
     "卧室门扇",
     "阳台深度"
   ],
-  "viewer_tested": "v1.3.0 Node: 28 life/feel + 10 Viewer touch/geometry + 7 furnishing + 4 integration = 49 passed; headless Chromium (SwiftShader) renders of the round-two viewpoints; no physical iPhone/Safari verification",
+  "viewer_tested": "v1.4.0 Node: 10 touch/geometry + 28 life + 7 furnishing + 12 hands/round-three + 4 integration = 61 passed; headless Chromium (SwiftShader) gesture renders; no physical iPhone/Safari verification",
   "native_usdz": "open-top, 243 meshes, verified by import; not physical iPhone",
   "viewer_startup": "single HTML, no external startup assets, no background GLB replacement",
   "viewer_startup_fault_checks": "6 historical v1.0.1 checks; not rerun for v1.0.2",
-  "viewer_rendering": "244 semantic parts + 45 decor pieces / 46 merged draw batches (roam 85 draws), ~112k triangles, MeshStandardMaterial with procedural textures, on demand",
+  "viewer_rendering": "244 semantic parts + virtual working parts + decor / 47 draw batches (~134k triangles); roam ~96 draws incl. two skinned arms",
   "roaming": {
     "mode": "first-person life simulation",
     "entry": "漫游",
     "standing_eye_height_m": 1.62,
     "fov_deg": 70,
-    "interaction_objects": 32,
+    "interaction_objects": 41,
     "configuration": "dist/interaction_config.json",
     "normal_movement": "left joystick, independent right look, camera-relative collision movement",
     "postures": "chair/desk/sofa/bed/toilet; smooth camera pose and safe stand-up; head turning while seated/lying",
@@ -50,5 +50,14 @@
     "interaction_alignment": "colliders, interactionPoints, cameraPose and movable parts unchanged and verified by model/furnishing_checks.js",
     "exports_not_updated": "room.glb / room.usdz / room.blend still contain the v1 Blender geometry (needs Blender to regenerate)",
     "qa_renders": "dist/checks/round2/"
+  },
+  "round_three": {
+    "hands": "dist/first_person_hands.js: skinned arms, two-bone IK, reach->contact->drive->release->retract; parts move only at contact; step-in/crouch/step-aside; no clipping into walls/furniture/glass",
+    "movement": "only sit/lie/use postures lock movement",
+    "collision": "config collisionProxy boxes, player radius 0.16 m, corner sliding; cart and floor lamp collide",
+    "structure": "board carcasses, drawer boxes, wardrobe/cabinet interiors, toilet seat+lid hinged separately",
+    "kitchen": "two burners with knobs, low/medium/high flame; range hood on/off with light and indicator",
+    "config_migration": "model/upgrade_interactions_r3.mjs (idempotent)",
+    "qa_renders": "dist/checks/round3/"
   }
 }

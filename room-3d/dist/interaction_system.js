@@ -116,7 +116,8 @@ export class InteractionSystem {
    if(Math.abs(angleDelta(this.look.yaw,this.lookTarget.yaw))<.00005)this.look.yaw=this.lookTarget.yaw;if(Math.abs(this.look.pitch-this.lookTarget.pitch)<.00005)this.look.pitch=this.lookTarget.pitch;
    if(!this.occupied){
     // Hands may ask the body to step in or crouch for far or low handles while reaching.
-    if(this.hands){const step=this.hands.assist;if(step&&(step.x||step.z)){const next=moveWithCollision(this.adapter.world,this.walker.position,step.x*dt,step.z*dt);this.walker.position=next;}}
+    if(this.hands){const step=this.hands.assist;if(step&&(step.x||step.z)){const key=this.hands.gesture?.key,sweep=key&&this.adapter.sweep?this.adapter.sweep(key):[],world=sweep.length?{...this.adapter.world,boxes:[...this.adapter.world.boxes,...sweep]}:this.adapter.world;
+     const use=isWalkable(world,this.walker.position.x,this.walker.position.z)?world:this.adapter.world;this.walker.position=moveWithCollision(use,this.walker.position,step.x*dt,step.z*dt);}}
     const crouchTarget=this.hands?.crouch||0;this.crouch+=(crouchTarget-this.crouch)*(1-Math.exp(-dt*7));if(Math.abs(this.crouch-crouchTarget)<.0005)this.crouch=crouchTarget;
     const target=this.locked?0:Math.min(1,(this.walker.speed||0)/1.10)*.003;this.bobAmount+=(target-this.bobAmount)*(1-Math.exp(-dt*9));if(Math.abs(this.bobAmount-target)<.00002)this.bobAmount=target;const p=new THREE.Vector3(this.walker.position.x,EYE_HEIGHT-this.crouch+Math.sin(this.walker.travel*12)*this.bobAmount,this.walker.position.z);if(cameraClear(this.adapter.world,p))this.camera.position.copy(p);}
   }

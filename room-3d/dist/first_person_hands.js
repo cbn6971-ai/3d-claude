@@ -19,10 +19,10 @@ const THUMB={base:[.030,.020,-.012],len:[.037,.030,.024],r:.0099};
 export const HAND_POSES={
  relaxed:{f:[[.30,.40,.26],[.34,.44,.28],[.40,.48,.30],[.48,.52,.32]],t:[.25,.15]},
  open:{f:[[.08,.06,.04],[.08,.06,.04],[.10,.08,.05],[.12,.08,.05]],t:[.05,.45]},
- grip:{f:[[1.18,1.30,.85],[1.22,1.35,.85],[1.26,1.35,.85],[1.30,1.30,.80]],t:[.95,-.05]},
+ grip:{f:[[.92,1.02,.52],[.96,1.06,.55],[1.0,1.06,.55],[1.04,1.02,.52]],t:[.85,-.05]},
  pinch:{f:[[.78,.60,.35],[.95,.85,.45],[1.25,1.25,.80],[1.30,1.25,.80]],t:[.75,.20]},
  point:{f:[[.04,.04,.02],[1.35,1.45,.95],[1.40,1.45,.95],[1.40,1.40,.90]],t:[.80,.0]},
- hook:{f:[[.88,.78,.45],[.88,.78,.45],[.92,.78,.45],[.98,.78,.45]],t:[.25,.25]},
+ hook:{f:[[.50,.62,.30],[.50,.62,.30],[.55,.62,.30],[.60,.62,.30]],t:[.30,.25]},
  flat:{f:[[.06,.05,.02],[.06,.05,.02],[.07,.05,.02],[.09,.06,.03]],t:[.10,.50]}
 };
 // Where the grasped point sits relative to the wrist, in the hand frame (x scaled by side).
@@ -49,8 +49,10 @@ function buildArm(side){
  seg(elbow,new THREE.CylinderGeometry(.049,.049,.024,14).translate(0,FORE*.56,0).scale(1,1,.9),CUFF);
  seg(elbow,new THREE.CylinderGeometry(.027,.038,FORE,14).translate(0,FORE/2,0).scale(1,1,.8),SKIN);
  seg(wrist,new THREE.SphereGeometry(.029,12,8).scale(1,.8,.72),SKIN);
- const palm=new THREE.BoxGeometry(.080,PALM+.006,.026,3,4,2),pp=palm.attributes.position;for(let i=0;i<pp.count;i++){const x=pp.getX(i),y=pp.getY(i),z=pp.getZ(i),r=Math.hypot(x/.040,z/.013);const k=r>1?1/r:1;pp.setXYZ(i,x*(.92+.08*k),y,z*(.85+.15*k));}palm.computeVertexNormals();
- seg(wrist,palm.translate(s*.001,PALM/2,-.002),SKIN);
+ // Rounded palm: a flattened ellipsoid plus a soft knuckle ridge, no box edges.
+ const palm=new THREE.SphereGeometry(1,18,12),pp=palm.attributes.position;for(let i=0;i<pp.count;i++){const x=pp.getX(i),y=pp.getY(i),z=pp.getZ(i),sq=1-.25*Math.pow(Math.abs(y),4);pp.setXYZ(i,x*.041*sq,y*PALM*.56,z*(z>0?.014:.017));}palm.computeVertexNormals();
+ seg(wrist,palm.translate(s*.001,PALM*.52,-.002),SKIN);
+ seg(wrist,new THREE.CapsuleGeometry(.012,.056,4,10).rotateZ(Math.PI/2).scale(1,1,.9).translate(s*.0,PALM-.004,.001),SKIN);
  seg(wrist,new THREE.SphereGeometry(1,12,8).scale(.019,.032,.015).translate(s*.024,.030,-.010),SKIN);
  FINGERS.forEach((f,i)=>f.len.forEach((l,j)=>seg(fingers[i][j],capsule(f.r*(1-j*.09),l),SKIN)));
  [t0,t1,t2].forEach((b,j)=>seg(b,capsule(THUMB.r*(1-j*.1),THUMB.len[j]),SKIN));

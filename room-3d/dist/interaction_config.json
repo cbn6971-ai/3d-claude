@@ -1014,7 +1014,7 @@
   "duration": 0.66,
   "handPose": {
    "gesture": "pull",
-   "grip": "grip",
+   "grip": "hook",
    "palm": [
     -1,
     0,
@@ -1125,7 +1125,7 @@
   "duration": 0.66,
   "handPose": {
    "gesture": "pull",
-   "grip": "grip",
+   "grip": "hook",
    "palm": [
     -1,
     0,
@@ -1236,7 +1236,7 @@
   "duration": 0.66,
   "handPose": {
    "gesture": "pull",
-   "grip": "grip",
+   "grip": "hook",
    "palm": [
     -1,
     0,
@@ -1347,7 +1347,7 @@
   "duration": 0.66,
   "handPose": {
    "gesture": "pull",
-   "grip": "grip",
+   "grip": "hook",
    "palm": [
     -1,
     0,
@@ -1458,7 +1458,7 @@
   "duration": 0.66,
   "handPose": {
    "gesture": "pull",
-   "grip": "grip",
+   "grip": "hook",
    "palm": [
     -1,
     0,
@@ -1569,7 +1569,7 @@
   "duration": 0.66,
   "handPose": {
    "gesture": "pull",
-   "grip": "grip",
+   "grip": "hook",
    "palm": [
     -1,
     0,
@@ -1681,7 +1681,7 @@
   "duration": 0.66,
   "handPose": {
    "gesture": "pull",
-   "grip": "grip",
+   "grip": "hook",
    "palm": [
     1,
     0,
@@ -1793,7 +1793,7 @@
   "duration": 0.66,
   "handPose": {
    "gesture": "pull",
-   "grip": "grip",
+   "grip": "hook",
    "palm": [
     1,
     0,

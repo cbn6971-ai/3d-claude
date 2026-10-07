@@ -27,5 +27,5 @@ check('materials are physically based with separated fabric, wood, tile, metal a
  assert(by.get('metal').metalness>.8&&by.get('metal').roughness<.35);assert(by.get('glass').transparent&&by.get('glass').opacity<.3);assert(by.get('oat').roughness>.9&&by.get('tile').roughness<.4);assert(by.get('wood').map&&by.get('linen').map&&by.get('tile').map);
  assert(model.children.length<60);let tris=0;model.traverse(m=>{if(m.isMesh)tris+=m.geometry.index.count/3;});assert(tris<160000,'triangles '+tris);});
 const tris=model.children.reduce((a,m)=>a+m.geometry.index.count/3,0);
-const result={version:'1.3.0',passed:true,checks,drawBatches:model.children.length,triangles:tris,decorPieces:decor.length,verification:'Node with real Three.js geometry, the actual InteractionSystem configuration and collision builder; no browser or physical iPhone execution'};
+const result={version:'1.4.0',passed:true,checks,drawBatches:model.children.length,triangles:tris,decorPieces:decor.length,verification:'Node with real Three.js geometry, the actual InteractionSystem configuration and collision builder; no browser or physical iPhone execution'};
 fs.writeFileSync('dist/furnishing_checks.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));

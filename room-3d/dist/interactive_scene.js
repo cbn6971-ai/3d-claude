@@ -63,10 +63,13 @@ export function buildInteractiveScene(doc,spec,wallClip,configs){
   }updateCollision();
  }
  function updateCollision(){root.updateMatrixWorld(true);world.dynamicBoxes=[];for(const b of collisionBindings){const bounds=new THREE.Box3().setFromObject(b.group);world.dynamicBoxes.push({minX:bounds.min.x,maxX:bounds.max.x,minY:bounds.min.y,maxY:bounds.max.y,minZ:bounds.min.z,maxZ:bounds.max.z,name:b.group.name});}world.boxes=[...world.staticBoxes,...world.dynamicBoxes];}
+ // Space a moving part sweeps between closed and open; the body's step-in avoids it.
+ const sweeps=new Map();for(const [key,list]of bindings){const groups=list.filter(b=>b.descriptor.collision&&b.group);if(!groups.length)continue;const boxes=[];for(const p of [0,.25,.5,.75,1]){apply(key,p);for(const b of groups){const bounds=new THREE.Box3().setFromObject(b.group);boxes.push({minX:bounds.min.x,maxX:bounds.max.x,minY:bounds.min.y,maxY:bounds.max.y,minZ:bounds.min.z,maxZ:bounds.max.z,name:key+'_sweep'});}}sweeps.set(key,boxes);}
+ function sweep(key){return sweeps.get(key)||[];}
  function animateEffects(time){let active=false;for(const list of bindings.values())for(const b of list){if(b.water?.visible){active=true;b.water.scale.y=.98+Math.sin(time*.009)*.02;}
    // Flame height and spread follow the knob level; a cheap two-sine flicker keeps it alive.
    if(b.flame?.visible){active=true;const k=b.level,f=1+.07*Math.sin(time*.031+b.descriptor.position[2]*40)+.04*Math.sin(time*.057);b.flame.scale.set(.82+.28*k,(.32+.95*k)*f,.82+.28*k);}}return active;}
  function dispose(){const geometries=new Set(),materials=new Set(),textures=new Set();root.traverse(m=>{if(m.geometry)geometries.add(m.geometry);if(m.material){materials.add(m.material);if(m.material.map)textures.add(m.material.map);}});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());root.removeFromParent();}
- root.visible=false;return {root,parts,bindings,world,apply,updateCollision,animateEffects,dispose,handTarget,nodes,configs};
+ root.visible=false;return {root,parts,bindings,world,apply,updateCollision,animateEffects,dispose,handTarget,sweep,nodes,configs};
 }
 function desktopTexture(){const w=64,h=40,data=new Uint8Array(w*h*4);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=(y*w+x)*4,bar=x>8&&x<52&&y>9&&y<32,line=bar&&y%6<2;data[i]=line?156:bar?53:22;data[i+1]=line?180:bar?69:32;data[i+2]=line?190:bar?79:42;data[i+3]=255;}const t=new THREE.DataTexture(data,w,h);t.colorSpace=THREE.SRGBColorSpace;t.needsUpdate=true;return t;}

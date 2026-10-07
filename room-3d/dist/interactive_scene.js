@@ -12,16 +12,17 @@ export function buildInteractiveScene(doc,spec,wallClip,configs){
    if(p.front==='-x'){v.size=[.018,p.kind==='drawer'?d-.025:d/2-.014,p.kind==='drawer'?h/2-.016:h-.024];v.position=[x-w/2,z+(p.kind==='drawer'?0:(i-.5)*d/2),y+(p.kind==='drawer'?(i-.5)*h/2:0)];}
    else{v.size=[w/2-.014,.018,h-.024];v.position=[x+(i-.5)*w/2,z-d/2,y];}nodes.set(v.name,v);}}
  const independent=new Set([...moving,...bodies.keys(),...configs.filter(c=>c.glassPartition).flatMap(c=>c.glassPartition.names)]);
- const baseNodes=spec.nodes.filter(n=>!independent.has(n.name)&&!replaced.has(n.name));const staticModel=buildRoomModel(doc,{...spec,nodes:baseNodes},wallClip);root.add(staticModel);
- for(const name of independent){const n=nodes.get(name);if(!n)throw Error('交互部件未绑定 '+name);let g=createPartGeometry(n);const material=createPartMaterial(doc,n,wallClip);
+ const baseNodes=spec.nodes.filter(n=>!independent.has(n.name)&&!replaced.has(n.name));const staticModel=buildRoomModel(doc,{...spec,nodes:baseNodes},wallClip,{decorSpec:spec});root.add(staticModel);
+ for(const name of independent){const n=nodes.get(name);if(!n)throw Error('交互部件未绑定 '+name);// Opened bodies use their plain carcass; the separate fronts carry the door/drawer faces.
+  let g=createPartGeometry(bodies.has(name)?{...n,carcass:true}:n);const material=createPartMaterial(doc,n,wallClip);
   if(bodies.has(name)){const front=bodies.get(name).front;g=openFront(g,front);material.side=THREE.DoubleSide;}
   const mesh=new THREE.Mesh(g,material);mesh.name=name;mesh.userData={layer:n.layer,parts:[name]};parts.set(name,mesh);root.add(mesh);
  }
  const collisionNodes=spec.nodes.filter(n=>!moving.has(n.name));const world=createCollisionWorld({...spec,nodes:collisionNodes});world.staticBoxes=[...world.boxes];world.dynamicBoxes=[];
  // Eye clearance uses cached part bounds, never the whole bed/sofa footprint.
  // These small volumes are computed once from existing geometry, not rebuilt assets.
- world.cameraBoxes=collisionNodes.filter(n=>(n.wall||['furniture','soft'].includes(n.layer))&&!['Bed_rug','Living_rug'].includes(n.name)&&!bodies.has(n.name)).map(n=>{
-  const g=createPartGeometry(n);g.computeBoundingBox();const b=g.boundingBox.clone();g.dispose();return {minX:b.min.x,maxX:b.max.x,minY:b.min.y,maxY:b.max.y,minZ:b.min.z,maxZ:b.max.z,name:n.name};
+ world.cameraBoxes=collisionNodes.filter(n=>(n.wall||['furniture','soft'].includes(n.layer))&&!['Bed_rug','Living_rug'].includes(n.name)&&!bodies.has(n.name)).flatMap(n=>{
+  const g=createPartGeometry(n);if(!g)return [];g.computeBoundingBox();const b=g.boundingBox.clone();g.dispose();return {minX:b.min.x,maxX:b.max.x,minY:b.min.y,maxY:b.max.y,minZ:b.min.z,maxZ:b.max.z,name:n.name};
  });
  const collisionBindings=[];
  for(const c of configs){const list=[];for(const a of c.animation){const meshes=a.parts.map(n=>parts.get(n));if(meshes.some(m=>!m))throw Error('交互动画引用缺少部件 '+c.id);let binding;

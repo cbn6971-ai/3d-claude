@@ -1,5 +1,5 @@
 {
-  "version": "1.2.1",
+  "version": "1.3.0",
   "passed": true,
   "checks": [
     "single-finger rotation changes real camera",
@@ -13,8 +13,8 @@
     "merged geometry preserves bounds and clipping",
     "entry page needs no external startup assets or GLB replacement"
   ],
-  "drawBatches": 29,
+  "drawBatches": 46,
   "sourceParts": 244,
-  "htmlBytes": 665272,
+  "htmlBytes": 736134,
   "verification": "Node with real Three.js camera/math/geometry and synthetic Touch Events; no browser or physical iPhone execution"
 }

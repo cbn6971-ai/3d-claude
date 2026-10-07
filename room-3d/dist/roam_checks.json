@@ -1,5 +1,5 @@
 {
-  "version": "1.2.1",
+  "version": "1.3.0",
   "passed": true,
   "checks": [
     "configuration schema and all first-batch furniture categories",

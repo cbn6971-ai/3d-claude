@@ -1,0 +1,112 @@
+{
+  "checks": [
+    {
+      "check": "GLB header",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Every generated component exported",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Unique component names",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "GLB layer metadata",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Ceiling in GLB",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Bedroom opening left of sofa",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Sofa back at bedroom partition",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Kitchen remains open toward living",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Bathroom left-wall opening",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Entry on desk side",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Wardrobe opposite desk",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Bed head against right wall",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Single bathroom window on B end wall",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Positive geometry dimensions",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Sofa/table leave left walking path",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "Top camera image exists",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "USDZ readable package",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "USDZ first entry is USD",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "USDZ uncompressed",
+      "passed": true,
+      "note": ""
+    },
+    {
+      "check": "USDZ 64-byte alignment",
+      "passed": true,
+      "note": ""
+    }
+  ],
+  "node_count": 244,
+  "mesh_count": 244,
+  "unresolved": [
+    "7.5m范围与B图纵横比不一致，按用户所说仅主体解释",
+    "卫生间窗：B底墙，C似右墙",
+    "卧室通道：B缺口，C门洞",
+    "阳台深度缺少反向照片"
+  ]
+}

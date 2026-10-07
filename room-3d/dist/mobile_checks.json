@@ -1,0 +1,20 @@
+{
+  "version": "1.2.1",
+  "passed": true,
+  "checks": [
+    "single-finger rotation changes real camera",
+    "two-finger pinch zooms perspective camera",
+    "two-finger center motion pans",
+    "two-to-one finger transition continues",
+    "cancelled gesture recovers on next drag",
+    "orthographic pinch zooms floorplan",
+    "touch handlers clean up",
+    "all 244 parts retained in fewer than 60 draw batches",
+    "merged geometry preserves bounds and clipping",
+    "entry page needs no external startup assets or GLB replacement"
+  ],
+  "drawBatches": 29,
+  "sourceParts": 244,
+  "htmlBytes": 665272,
+  "verification": "Node with real Three.js camera/math/geometry and synthetic Touch Events; no browser or physical iPhone execution"
+}

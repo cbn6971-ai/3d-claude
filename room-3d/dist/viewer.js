@@ -1,0 +1,78 @@
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {buildRoomModel} from './scene_model.js';
+import {bindTouchNavigation} from './touch_navigation.js';
+import {RoamController} from './roam.js';
+async function startViewer(){
+const $=s=>document.querySelector(s);const touchDevice=matchMedia('(pointer:coarse)').matches||(/iPad|iPhone/.test(navigator.userAgent));let raf=0,dirty=true,contextLost=false;function invalidate(){dirty=true;if(!raf&&!contextLost&&!document.hidden)raf=requestAnimationFrame(frame);}
+const canvas=$('#canvas');const stage=$('#stage');
+window.roomBoot.progress('正在启动3D显示…');
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas,antialias:!touchDevice,alpha:true,powerPreference:'default'});}catch(e){throw Error('此浏览器暂时无法启动3D显示，可重试或先查看校验图。');}
+canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;roam?.resetInput();cancelAnimationFrame(raf);raf=0;window.roomBoot.fail('3D显示已中断，请点重新加载。');});
+canvas.addEventListener('webglcontextrestored',()=>{contextLost=false;lastVis='';invalidate();window.roomBoot.ready();});
+renderer.localClippingEnabled=true;const wallClip=new THREE.Plane(new THREE.Vector3(0,-1,0),1.15);renderer.setPixelRatio(Math.min(devicePixelRatio,touchDevice?1:2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+const scene=new THREE.Scene();scene.add(new THREE.HemisphereLight(0xffffff,0x8d96a4,2.2));const key=new THREE.DirectionalLight(0xffffff,2.5);key.position.set(-3,10,5);scene.add(key);const fill=new THREE.DirectionalLight(0xe6ecff,1.0);fill.position.set(8,6,-10);scene.add(fill);
+const perspective=new THREE.PerspectiveCamera(42,1,.03,200);const ortho=new THREE.OrthographicCamera(-7,7,7,-7,.02,200);let camera=perspective;
+const controls=new OrbitControls(camera,canvas);controls.enableDamping=!touchDevice;controls.dampingFactor=.09;controls.minDistance=.2;controls.maxDistance=40;controls.maxPolarAngle=Math.PI/2-.02;controls.touches.ONE=THREE.TOUCH.ROTATE;controls.touches.TWO=THREE.TOUCH.DOLLY_PAN;controls.enablePan=true;controls.screenSpacePanning=true;
+let removeViewerTouch=null,roam=null,roamSnapshot=null;
+function attachViewerInput(){if(touchDevice){if(!removeViewerTouch)removeViewerTouch=bindTouchNavigation(canvas,controls,()=>camera,()=>{transition=null;invalidate();});}else controls.connect(canvas);}
+function detachViewerInput(){if(touchDevice){removeViewerTouch?.();removeViewerTouch=null;}else controls.disconnect();}
+if(touchDevice){controls.disconnect();attachViewerInput();}
+controls.addEventListener('change',invalidate);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;roam?.resetInput();}else invalidate();});window.addEventListener('pageshow',()=>{invalidate();});
+let model,dim,doc,spec,mode='decoration',currentView='all',transition=null,modelSource='parametric';const meshes=[],labels=[];const state={ceiling:false,exterior:true,furniture:true,soft:true,cutaway:true};let labelData=[];let lastVis='';
+const viewNames={all:'全屋 · 45°鸟瞰',top:'全屋 · 俯视',bedroom:'卧室',bedfoot:'床尾',living:'客厅',kitchen:'厨房',bathroom:'卫生间'};
+function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight);renderer.setSize(w,h,false);perspective.aspect=w/h;perspective.updateProjectionMatrix();const span=((dim?.total_depth??10)+2)/.76;ortho.left=-span*w/h/2;ortho.right=span*w/h/2;ortho.top=span/2;ortho.bottom=-span/2;ortho.updateProjectionMatrix();invalidate();}
+if(window.ResizeObserver)new ResizeObserver(resize).observe(stage);else window.addEventListener('resize',resize);
+function p(k){return doc.parameters[k].value;}
+function poses(view){const W=dim.width,L=dim.total_depth,D=dim.bedroom_depth,B=dim.body_depth;const sx=W-p('sofa_right_gap')-p('sofa_width')/2;
+ const eye=mode==='immersive';
+ const v={all:[[-8,14,L+7],[W/2,.55,L/2]],top:[[W/2,19,L/2+1.0+.001],[W/2,0,L/2+1.0]],bedroom:[[-3,7,-1.7],[2,.50,D*.53]],bedfoot:[[.90,eye?1.50:2.30,D*.66],[W-.42,.88,D*.66]],living:[[eye?.65:-2.5,eye?1.55:5.4,B-.10],[sx,.58,D+.58]],kitchen:[[1.55,eye?1.55:3.30,B-.85],[(p('kitchen_left_x')+p('bathroom_left_x'))/2,.7,L-.42]],bathroom:[[2.7,eye?1.50:4.7,B-.10],[3.1,.5,B+1.12]]};
+ if(eye&&['all','bedroom','top'].includes(view))return [[1.1,1.55,D*.45],[W-.30,1.0,D*.60]];
+ if(view==='all'){const a=v.all;const factor=Math.max(1,.76/(stage.clientWidth/stage.clientHeight));a[0]=a[0].map((x,i)=>a[1][i]+(x-a[1][i])*factor);}
+ return v[view];}
+function setCamera(useOrtho){camera=useOrtho?ortho:perspective;controls.object=camera;controls.minDistance=mode==='immersive'?.15:.5;controls.maxDistance=mode==='immersive'?5:40;controls.maxPolarAngle=mode==='immersive'?Math.PI-.05:Math.PI/2-.001;resize();}
+function goView(view,animate=true){if(!dim||!viewNames[view])return;if(roam?.active)exitRoam();currentView=view;setCamera(mode==='floorplan'||(view==='top'&&mode!=='immersive'));const [pos,target]=poses(view);if(animate){transition={start:performance.now(),from:camera.position.clone(),to:new THREE.Vector3(...pos),fromTarget:controls.target.clone(),toTarget:new THREE.Vector3(...target)};}else{camera.position.set(...pos);controls.target.set(...target);controls.update();}$('#view-title').textContent=viewNames[view];document.querySelectorAll('[data-view]').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);b.setAttribute('aria-pressed',b.dataset.view===view);});lastVis='';invalidate();}
+function changeMode(next){if(roam?.active)exitRoam();if(!['floorplan','decoration','immersive'].includes(next))throw Error('未知模式');mode=next;state.furniture=next!=='floorplan';state.soft=next!=='floorplan';state.ceiling=next==='immersive';for(const k of ['furniture','soft','ceiling'])$('#'+k).checked=state[k];document.querySelectorAll('[data-mode]').forEach(b=>{b.classList.toggle('active',b.dataset.mode===next);b.setAttribute('aria-pressed',b.dataset.mode===next);});$('#immersive-controls').hidden=next!=='immersive';$('#hint').textContent=next==='immersive'?'拖动查看 · 按钮移动':'单指旋转 · 双指缩放与平移';goView(next==='floorplan'?'top':next==='immersive'?'bedfoot':'all');}
+function visibility(){if(!model)return;const near=[];if(state.cutaway&&mode!=='immersive'&&currentView!=='top'){near.push(camera.position.x<dim.width/2?'left':'right');near.push(camera.position.z<dim.total_depth/2?'balcony':'end');}const sig=JSON.stringify([state,near,mode,!!roam?.active]);if(sig===lastVis)return;lastVis=sig;for(const m of meshes){let vis=true;const l=m.userData.layer;if(l==='ceiling')vis=state.ceiling;else if(l==='exterior')vis=state.exterior&&!near.includes(m.userData.side);else if(l==='furniture')vis=state.furniture;else if(l==='soft')vis=state.soft;m.visible=vis;if(m.userData.wall&&l==='structure')wallClip.constant=state.cutaway&&mode!=='immersive'&&currentView!=='top'?1.15:dim.height+1;}$('#labels').hidden=mode!=='floorplan'||!!roam?.active;}
+function updateLabels(){if(mode!=='floorplan'||roam?.active)return;labelData.forEach((d,i)=>{const [x,y,z]=d.position;const v=new THREE.Vector3(x,z,y).project(camera);labels[i].style.left=((v.x+1)/2*stage.clientWidth)+'px';labels[i].style.top=((-v.y+1)/2*stage.clientHeight)+'px';labels[i].hidden=Math.abs(v.x)>1||Math.abs(v.y)>1;});}
+function movement(direction){if(mode!=='immersive')return;transition=null;const f=controls.target.clone().sub(camera.position);f.y=0;f.normalize();const r=new THREE.Vector3().crossVectors(f,new THREE.Vector3(0,1,0));const amount=.18;const offset=direction==='forward'?f:direction==='back'?f.negate():direction==='right'?r:r.negate();offset.multiplyScalar(amount);const next=camera.position.clone().add(offset);next.x=THREE.MathUtils.clamp(next.x,.15,dim.width-.15);next.z=THREE.MathUtils.clamp(next.z,.10,dim.total_depth-.15);offset.copy(next).sub(camera.position);camera.position.add(offset);controls.target.add(offset);controls.update();}
+function frame(t){raf=0;if(contextLost||document.hidden)return;try{let changed=false;if(transition){const q=Math.min(1,(t-transition.start)/450),k=q*q*(3-2*q);camera.position.lerpVectors(transition.from,transition.to,k);controls.target.lerpVectors(transition.fromTarget,transition.toTarget,k);if(q===1)transition=null;changed=true;}if(roam?.active){changed=true;const moving=roam.update(t);if(moving)invalidate();}else changed=controls.update()||changed;if(dirty||changed){visibility();updateLabels();renderer.render(scene,camera);dirty=false;}if(transition||(!roam?.active&&changed))invalidate();}catch(e){contextLost=true;window.roomBoot.fail('3D显示中断，可重新加载。');console.error(e);}}
+controls.addEventListener('start',()=>{transition=null;});
+for(const k of Object.keys(state))$('#'+k).addEventListener('change',e=>{const value=e.target.checked;if(roam?.active)exitRoam();state[k]=value;e.target.checked=value;lastVis='';invalidate();});
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>goView(b.dataset.view)));
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>changeMode(b.dataset.mode)));
+document.querySelectorAll('[data-move]').forEach(b=>b.addEventListener('click',()=>movement(b.dataset.move)));
+$('#reset').onclick=()=>changeMode('decoration');
+$('#fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else $('#hint').textContent='此设备请横屏查看，可获得更大画面。';}catch{$('#hint').textContent='请横屏查看，可获得更大画面。';}};
+function setPanel(open){window.roomBoot.setPanel(open);}
+$('#image-close').onclick=()=>$('#image-dialog').close();
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){if(roam?.active)exitRoam();else setPanel(false);}if(!roam?.active&&mode==='immersive'&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','s','a','d'].includes(e.key)){e.preventDefault();movement({ArrowUp:'forward',w:'forward',ArrowDown:'back',s:'back',ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right'}[e.key]);}});
+ const seed=JSON.parse($('#room-seed').textContent);doc=seed.document;spec=seed.scene;dim=spec.derived;labelData=spec.labels;
+ window.roomBoot.progress('正在建立房间结构…');
+ for(const d of labelData){const el=document.createElement('span');el.className='room-label';el.textContent=d.name;$('#labels').append(el);labels.push(el);}
+ const ds=[['主体',`${dim.body_depth.toFixed(2)} × ${dim.width.toFixed(2)} m`],['卧室深度',`${dim.bedroom_depth.toFixed(2)} m · 估算`],['客厅深度',`${dim.living_depth.toFixed(2)} m · 估算`],['厨卫深度',`${dim.service_depth.toFixed(2)} m · 估算`],['层高',`${dim.height.toFixed(2)} m · 估算`],['阳台朝向',`${p('balcony_azimuth')}°`]];
+ for(const [n,v]of ds){const row=document.createElement('div');const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=n;dd.textContent=v;row.append(dt,dd);$('#dimensions').append(row);}
+ model=buildRoomModel(doc,spec,wallClip);scene.add(model);model.traverse(m=>{if(m.isMesh)meshes.push(m);});goView('all',false);visibility();renderer.render(scene,camera);dirty=false;window.roomBoot.ready();
+ function enterRoam(){
+  if(roam?.active)return;transition=null;controls.enableDamping=false;controls.update();
+  roamSnapshot={camera,position:camera.position.clone(),quaternion:camera.quaternion.clone(),target:controls.target.clone(),zoom:camera.zoom,fov:perspective.fov,near:perspective.near,mode,currentView,state:{...state}};
+  detachViewerInput();controls.enabled=false;camera=perspective;perspective.zoom=1;perspective.fov=70;perspective.near=.035;perspective.updateProjectionMatrix();
+  Object.assign(state,{ceiling:true,exterior:true,furniture:true,soft:true,cutaway:false});lastVis='';visibility();setPanel(false);$('#panel-toggle').disabled=true;
+  if(!roam)roam=new RoamController({scene,camera:perspective,spec,interactionConfigs:seed.interactions,modelDoc:doc,wallClip,originalModel:model,hud:$('#roam-hud'),joystick:$('#roam-joystick'),knob:$('#roam-knob'),lookZone:$('#roam-look'),onWake:invalidate});
+  stage.classList.add('roaming');$('#roam-toggle').classList.add('active');$('#roam-toggle').setAttribute('aria-pressed','true');roam.enter();invalidate();
+ }
+ function exitRoam(){
+  if(!roam?.active)return;roam.exit();stage.classList.remove('roaming');$('#roam-toggle').classList.remove('active');$('#roam-toggle').setAttribute('aria-pressed','false');$('#panel-toggle').disabled=false;
+  perspective.fov=roamSnapshot.fov;perspective.near=roamSnapshot.near;perspective.updateProjectionMatrix();camera=roamSnapshot.camera;mode=roamSnapshot.mode;currentView=roamSnapshot.currentView;Object.assign(state,roamSnapshot.state);camera.position.copy(roamSnapshot.position);camera.quaternion.copy(roamSnapshot.quaternion);camera.zoom=roamSnapshot.zoom;camera.updateProjectionMatrix();controls.object=camera;controls.target.copy(roamSnapshot.target);controls.enabled=true;controls.enableDamping=!touchDevice;controls.update();
+  for(const k of Object.keys(state))$('#'+k).checked=state[k];attachViewerInput();lastVis='';visibility();resize();invalidate();
+ }
+ $('#roam-toggle').onclick=()=>{if(roam?.active)exitRoam();else enterRoam();};$('#roam-exit').onclick=exitRoam;
+ const checks={front:'前视',back:'后视',left:'左视',right:'右视',aerial:'45°鸟瞰',top:'顶视'};
+ for(const [id,title]of Object.entries(checks)){const b=document.createElement('button'),im=document.createElement('img');im.dataset.src=`checks/${id}.png`;im.alt=title;im.loading='lazy';b.append(im,document.createTextNode(title));b.onclick=()=>{$('#check-large').src=im.dataset.src;$('#check-large').alt=title;$('#check-caption').textContent=title+' · 天花板隐藏，近侧外墙剖开以查看内部。';$('#image-dialog').showModal();};$('#check-gallery').append(b);}
+ window.roomViewer={getState:()=>({mode,view:currentView,roam:roam?.getState()||{active:false},layers:{...state},meshCount:spec.nodes.length,drawBatches:meshes.length,visibleMeshes:meshes.filter(x=>x.visible).length,modelSource,dimensions:dim,camera:camera.position.toArray()}),setView:v=>{if(!viewNames[v])throw Error('未知视角');goView(v,false);visibility();invalidate();return window.roomViewer.getState();},setMode:v=>{changeMode(v);return window.roomViewer.getState();},interact:(action,object)=>{if(!roam?.active)return false;return roam.perform(action,object);},setRoam:on=>{if(on)enterRoam();else exitRoam();return window.roomViewer.getState();},setLayers:ls=>{if(roam?.active)exitRoam();for(const[k,v]of Object.entries(ls)){if(!(k in state)||typeof v!=='boolean')throw Error('无效图层参数');}Object.assign(state,ls);for(const k of Object.keys(ls))$('#'+k).checked=state[k];lastVis='';visibility();invalidate();return window.roomViewer.getState();}};
+ if(document.modelContext?.registerTool){try{const lifecycle=new AbortController();window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});for(const t of[{name:'read_room_view',description:'读取房间当前视角、模式、图层和估算尺寸。',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>window.roomViewer.getState()},{name:'set_room_view',description:'选择房间的快捷视角。',inputSchema:{type:'object',properties:{view:{type:'string',enum:Object.keys(viewNames)}},required:['view'],additionalProperties:false},execute:i=>window.roomViewer.setView(i.view)}])Promise.resolve(document.modelContext.registerTool(t,{signal:lifecycle.signal})).catch(()=>{});}catch(e){console.info('可选接口不可用',e.message);}}
+}
+function launch(){setTimeout(()=>startViewer().catch(e=>{window.roomBoot.fail(e.message||'3D显示未能启动，请重新加载。');console.error(e);}),0);}
+if(document.readyState==='complete')launch();else window.addEventListener('load',launch,{once:true});

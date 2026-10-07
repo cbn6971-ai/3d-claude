@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "browser": "Chromium with simulated mobile touch; not physical iOS",
+  "checks": [
+    {
+      "case": "GLB and JSON network failure",
+      "readyMilliseconds": 867,
+      "meshes": 244,
+      "interactive": true,
+      "moduleRequests": 1
+    },
+    {
+      "case": "GLB never completes",
+      "readyMilliseconds": 289,
+      "spinnerGone": true
+    },
+    {
+      "case": "engine script fails",
+      "retryVisible": true,
+      "settingsStillWorks": true,
+      "spinnerHidden": true
+    },
+    {
+      "case": "WebGL unavailable",
+      "fallbackVisible": true,
+      "retryVisible": true,
+      "spinnerHidden": true
+    },
+    {
+      "case": "startup timeout then late recovery",
+      "fallbackShown": true,
+      "recoversWhenEngineArrives": true
+    },
+    {
+      "case": "GPU context lost",
+      "retryVisible": true
+    }
+  ]
+}

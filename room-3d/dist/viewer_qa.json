@@ -1,0 +1,210 @@
+{
+  "errors": [],
+  "requestsFailed": [],
+  "checks": [
+    {
+      "view": "all",
+      "actual": "all",
+      "mesh": 236
+    },
+    {
+      "view": "top",
+      "actual": "top",
+      "mesh": 243
+    },
+    {
+      "view": "bedroom",
+      "actual": "bedroom",
+      "mesh": 225
+    },
+    {
+      "view": "bedfoot",
+      "actual": "bedfoot",
+      "mesh": 225
+    },
+    {
+      "view": "living",
+      "actual": "living",
+      "mesh": 236
+    },
+    {
+      "view": "kitchen",
+      "actual": "kitchen",
+      "mesh": 236
+    },
+    {
+      "view": "bathroom",
+      "actual": "bathroom",
+      "mesh": 235
+    },
+    {
+      "mode": "floorplan",
+      "state": {
+        "mode": "floorplan",
+        "view": "top",
+        "layers": {
+          "ceiling": false,
+          "exterior": true,
+          "furniture": false,
+          "soft": false,
+          "cutaway": true
+        },
+        "meshCount": 244,
+        "visibleMeshes": 113,
+        "modelSource": "glb",
+        "dimensions": {
+          "width": 4,
+          "body_depth": 7.5,
+          "bedroom_depth": 4.8375,
+          "living_depth": 2.6624999999999996,
+          "service_depth": 2.2,
+          "total_depth": 9.7,
+          "height": 2.75,
+          "bathroom_clear_width": 1.6400000000000001,
+          "kitchen_clear_width": 1.23,
+          "entry_door_start": 8.4
+        },
+        "camera": [
+          1.999999999999993,
+          19,
+          5.850999999999103
+        ]
+      }
+    },
+    {
+      "mode": "immersive",
+      "state": {
+        "mode": "immersive",
+        "view": "bedfoot",
+        "layers": {
+          "ceiling": true,
+          "exterior": true,
+          "furniture": true,
+          "soft": true,
+          "cutaway": true
+        },
+        "meshCount": 244,
+        "visibleMeshes": 244,
+        "modelSource": "glb",
+        "dimensions": {
+          "width": 4,
+          "body_depth": 7.5,
+          "bedroom_depth": 4.8375,
+          "living_depth": 2.6624999999999996,
+          "service_depth": 2.2,
+          "total_depth": 9.7,
+          "height": 2.75,
+          "bathroom_clear_width": 1.6400000000000001,
+          "kitchen_clear_width": 1.23,
+          "entry_door_start": 8.4
+        },
+        "camera": [
+          0.9793237333331497,
+          1.6410199703700425,
+          3.3781582094810503
+        ]
+      }
+    },
+    {
+      "mode": "decoration",
+      "state": {
+        "mode": "decoration",
+        "view": "all",
+        "layers": {
+          "ceiling": false,
+          "exterior": true,
+          "furniture": true,
+          "soft": true,
+          "cutaway": true
+        },
+        "meshCount": 244,
+        "visibleMeshes": 236,
+        "modelSource": "glb",
+        "dimensions": {
+          "width": 4,
+          "body_depth": 7.5,
+          "bedroom_depth": 4.8375,
+          "living_depth": 2.6624999999999996,
+          "service_depth": 2.2,
+          "total_depth": 9.7,
+          "height": 2.75,
+          "bathroom_clear_width": 1.6400000000000001,
+          "kitchen_clear_width": 1.23,
+          "entry_door_start": 8.4
+        },
+        "camera": [
+          -7.364047792176125,
+          13.106808696876579,
+          15.734835341670891
+        ]
+      }
+    },
+    {
+      "layer": "ceiling",
+      "on": true,
+      "visible": 236
+    },
+    {
+      "layer": "exterior",
+      "on": false,
+      "visible": 236
+    },
+    {
+      "layer": "furniture",
+      "on": false,
+      "visible": 236
+    },
+    {
+      "layer": "soft",
+      "on": false,
+      "visible": 236
+    }
+  ],
+  "initial": {
+    "mode": "decoration",
+    "view": "all",
+    "layers": {
+      "ceiling": false,
+      "exterior": true,
+      "furniture": true,
+      "soft": true,
+      "cutaway": true
+    },
+    "meshCount": 244,
+    "visibleMeshes": 236,
+    "modelSource": "glb",
+    "dimensions": {
+      "width": 4,
+      "body_depth": 7.5,
+      "bedroom_depth": 4.8375,
+      "living_depth": 2.6624999999999996,
+      "service_depth": 2.2,
+      "total_depth": 9.7,
+      "height": 2.75,
+      "bathroom_clear_width": 1.6400000000000001,
+      "kitchen_clear_width": 1.23,
+      "entry_door_start": 8.4
+    },
+    "camera": [
+      -8,
+      14,
+      16.7
+    ]
+  },
+  "webmcp": {
+    "registered": [
+      "read_room_view",
+      "set_room_view"
+    ],
+    "valid": "top",
+    "invalidRejected": true
+  },
+  "mouseRotate": true,
+  "mouseZoom": true,
+  "mousePan": true,
+  "mobileOverflow": false,
+  "mobilePanel": true,
+  "touchRotate": true,
+  "touchZoom": true,
+  "touchPan": true
+}

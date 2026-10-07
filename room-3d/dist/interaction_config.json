@@ -1,0 +1,2115 @@
+[
+  {
+    "id": "chair",
+    "label": "椅子",
+    "object": [
+      "Chair_seat",
+      "Chair_back",
+      "Chair_column",
+      "Chair_spoke0",
+      "Chair_wheel0",
+      "Chair_spoke1",
+      "Chair_wheel1",
+      "Chair_spoke2",
+      "Chair_wheel2",
+      "Chair_spoke3",
+      "Chair_wheel3",
+      "Chair_spoke4",
+      "Chair_wheel4"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.98,
+          1.05,
+          2.125
+        ],
+        "approach": [
+          1.52,
+          2.125
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "stand",
+        "label": "起身",
+        "kind": "release",
+        "available": [
+          "occupied"
+        ]
+      },
+      {
+        "id": "sit",
+        "label": "坐下",
+        "kind": "pose",
+        "cameraPose": "sit",
+        "available": [
+          "standing"
+        ]
+      }
+    ],
+    "cameraPose": {
+      "sit": {
+        "position": [
+          0.98,
+          1.2,
+          2.125
+        ],
+        "yaw": 1.5707963267948966,
+        "pitch": -0.17,
+        "waypoints": [],
+        "yawLimit": 1.3,
+        "pitchLimits": [
+          -0.78,
+          0.95
+        ],
+        "duration": 1.15,
+        "releaseDuration": 1.1
+      }
+    },
+    "animation": [],
+    "state": {
+      "posture": "standing"
+    }
+  },
+  {
+    "id": "desk",
+    "label": "书桌",
+    "object": [
+      "Desk_top",
+      "Desk_laptop_base",
+      "Desk_laptop_screen",
+      "Desk_lamp_base",
+      "Desk_lamp_stem",
+      "Desk_lamp_shade",
+      "Desk_plant_pot",
+      "Desk_plant_leaf0",
+      "Desk_plant_leaf1",
+      "Desk_plant_leaf2",
+      "Desk_plant_leaf3",
+      "Desk_plant_leaf4"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.51,
+          0.98,
+          2.125
+        ],
+        "approach": [
+          1.52,
+          2.125
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "stand",
+        "label": "起身",
+        "kind": "release",
+        "available": [
+          "occupied"
+        ]
+      },
+      {
+        "id": "use",
+        "label": "坐下使用",
+        "kind": "pose",
+        "cameraPose": "use",
+        "available": [
+          "standing"
+        ]
+      }
+    ],
+    "cameraPose": {
+      "use": {
+        "position": [
+          0.98,
+          1.2,
+          2.125
+        ],
+        "yaw": 1.5707963267948966,
+        "pitch": -0.17,
+        "waypoints": [],
+        "yawLimit": 1.3,
+        "pitchLimits": [
+          -0.78,
+          0.95
+        ],
+        "duration": 1.15,
+        "releaseDuration": 1.1
+      }
+    },
+    "animation": [],
+    "state": {
+      "posture": "standing"
+    }
+  },
+  {
+    "id": "sofa",
+    "label": "沙发",
+    "object": [
+      "Sofa_base",
+      "Sofa_back",
+      "Sofa_arm",
+      "Sofa_arm_01",
+      "Sofa_cushion",
+      "Sofa_cushion_01"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          2.4319999999999995,
+          1.03,
+          5.4975000000000005
+        ],
+        "approach": [
+          1.5019999999999993,
+          5.617500000000001
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "stand",
+        "label": "起身",
+        "kind": "release",
+        "available": [
+          "occupied"
+        ]
+      },
+      {
+        "id": "sit",
+        "label": "坐下",
+        "kind": "pose",
+        "cameraPose": "sit",
+        "available": [
+          "standing",
+          "lie"
+        ]
+      },
+      {
+        "id": "lie",
+        "label": "躺下",
+        "kind": "pose",
+        "cameraPose": "lie",
+        "available": [
+          "standing",
+          "sit"
+        ]
+      }
+    ],
+    "cameraPose": {
+      "sit": {
+        "position": [
+          2.4319999999999995,
+          1.17,
+          5.4975000000000005
+        ],
+        "yaw": 3.141592653589793,
+        "pitch": -0.07,
+        "waypoints": [],
+        "yawLimit": 1.3,
+        "pitchLimits": [
+          -0.78,
+          0.95
+        ],
+        "duration": 1.15,
+        "releaseDuration": 1.1
+      },
+      "lie": {
+        "position": [
+          3.328,
+          0.72,
+          5.5375000000000005
+        ],
+        "yaw": 1.5707963267948966,
+        "pitch": 0.42,
+        "waypoints": [
+          [
+            2.4319999999999995,
+            1.25,
+            5.5375000000000005
+          ]
+        ],
+        "yawLimit": 1.5,
+        "pitchLimits": [
+          -0.55,
+          1.3
+        ],
+        "duration": 1.55,
+        "releaseDuration": 1.35
+      }
+    },
+    "animation": [],
+    "state": {
+      "posture": "standing"
+    }
+  },
+  {
+    "id": "bed",
+    "label": "床",
+    "object": [
+      "Bed_frame",
+      "Bed_mattress",
+      "Bed_headboard",
+      "Bed_rug",
+      "Bed_lamp_base",
+      "Bed_lamp_stem",
+      "Bed_lamp_shade",
+      "Pillow",
+      "Pillow_01",
+      "Bedding",
+      "Bedding_stripe0",
+      "Bedding_stripe1",
+      "Bedding_stripe2",
+      "Bedding_stripe3",
+      "Bedding_stripe4",
+      "Bedding_stripe5",
+      "Bedding_stripe6",
+      "Bedding_stripe7",
+      "Bedding_stripe8",
+      "Bedding_stripe9",
+      "Bedding_stripe10",
+      "Bedding_stripe11",
+      "Bedding_stripe12",
+      "Cream_throw"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          2.885,
+          1,
+          3.76275
+        ],
+        "approach": [
+          2.885,
+          4.24275
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "stand",
+        "label": "起床",
+        "kind": "release",
+        "available": [
+          "occupied"
+        ]
+      },
+      {
+        "id": "sit",
+        "label": "坐床边",
+        "kind": "pose",
+        "cameraPose": "sit",
+        "available": [
+          "standing",
+          "lie",
+          "sleep"
+        ]
+      },
+      {
+        "id": "lie",
+        "label": "躺下",
+        "kind": "pose",
+        "cameraPose": "lie",
+        "available": [
+          "standing",
+          "sit",
+          "sleep"
+        ]
+      },
+      {
+        "id": "sleep",
+        "label": "睡觉",
+        "kind": "pose",
+        "cameraPose": "sleep",
+        "available": [
+          "standing",
+          "sit",
+          "lie"
+        ],
+        "sleep": true
+      }
+    ],
+    "cameraPose": {
+      "sit": {
+        "position": [
+          2.885,
+          1.21,
+          3.80275
+        ],
+        "yaw": 3.141592653589793,
+        "pitch": -0.12,
+        "waypoints": [],
+        "yawLimit": 1.3,
+        "pitchLimits": [
+          -0.78,
+          0.95
+        ],
+        "duration": 1.15,
+        "releaseDuration": 1.1
+      },
+      "lie": {
+        "position": [
+          3.4330999999999996,
+          0.74,
+          3.56775
+        ],
+        "yaw": 1.5707963267948966,
+        "pitch": 0.62,
+        "waypoints": [
+          [
+            2.885,
+            1.18,
+            3.76275
+          ]
+        ],
+        "yawLimit": 1.5,
+        "pitchLimits": [
+          -0.55,
+          1.3
+        ],
+        "duration": 1.55,
+        "releaseDuration": 1.35
+      },
+      "sleep": {
+        "position": [
+          3.4330999999999996,
+          0.74,
+          3.56775
+        ],
+        "yaw": 1.5707963267948966,
+        "pitch": 0.62,
+        "waypoints": [
+          [
+            2.885,
+            1.18,
+            3.76275
+          ]
+        ],
+        "yawLimit": 1.5,
+        "pitchLimits": [
+          -0.55,
+          1.3
+        ],
+        "duration": 1.55,
+        "releaseDuration": 1.35
+      }
+    },
+    "animation": [],
+    "state": {
+      "posture": "standing"
+    }
+  },
+  {
+    "id": "toilet",
+    "label": "马桶",
+    "object": [
+      "Toilet_bowl",
+      "Toilet_tank"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.63,
+          0.98,
+          8.58
+        ],
+        "approach": [
+          3.15,
+          8.58
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "stand",
+        "label": "起身",
+        "kind": "release",
+        "available": [
+          "occupied"
+        ]
+      },
+      {
+        "id": "use",
+        "label": "坐下使用",
+        "kind": "pose",
+        "cameraPose": "use",
+        "available": [
+          "standing"
+        ]
+      }
+    ],
+    "cameraPose": {
+      "use": {
+        "position": [
+          3.63,
+          1.14,
+          8.6
+        ],
+        "yaw": 0,
+        "pitch": -0.08,
+        "waypoints": [],
+        "yawLimit": 1.2,
+        "pitchLimits": [
+          -0.78,
+          0.95
+        ],
+        "duration": 1.15,
+        "releaseDuration": 1.1
+      }
+    },
+    "animation": [],
+    "state": {
+      "posture": "standing"
+    }
+  },
+  {
+    "id": "wardrobe",
+    "label": "衣柜",
+    "object": [
+      "Wardrobe_body",
+      "Wardrobe_door-1",
+      "Wardrobe_handle-1",
+      "Wardrobe_door1",
+      "Wardrobe_handle1"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.34,
+          1.15,
+          0.73
+        ],
+        "approach": [
+          2.65,
+          0.73
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "rotate",
+        "parts": [
+          "Wardrobe_door-1",
+          "Wardrobe_handle-1"
+        ],
+        "pivot": [
+          3.375,
+          1.05,
+          0.18899999999999995
+        ],
+        "axis": "y",
+        "amount": -1.2,
+        "collision": true
+      },
+      {
+        "type": "rotate",
+        "parts": [
+          "Wardrobe_door1",
+          "Wardrobe_handle1"
+        ],
+        "pivot": [
+          3.375,
+          1.05,
+          1.271
+        ],
+        "axis": "y",
+        "amount": 1.2,
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "openBodies": [
+      {
+        "body": "Wardrobe_body",
+        "front": "-x",
+        "count": 0
+      }
+    ],
+    "duration": 0.88
+  },
+  {
+    "id": "Desk_drawer_front",
+    "label": "书桌抽屉",
+    "object": [
+      "Desk_drawer_front",
+      "Desk_drawers"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.6,
+          0.21,
+          1.18
+        ],
+        "approach": [
+          1.3,
+          1.18
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Desk_drawer_front"
+        ],
+        "offset": [
+          0.3,
+          0,
+          0
+        ],
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "openBodies": [
+      {
+        "body": "Desk_drawers",
+        "front": "+x",
+        "count": 0
+      }
+    ],
+    "duration": 0.66
+  },
+  {
+    "id": "Desk_drawer_front_01",
+    "label": "书桌抽屉",
+    "object": [
+      "Desk_drawer_front_01",
+      "Desk_drawers"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.6,
+          0.43,
+          1.18
+        ],
+        "approach": [
+          1.3,
+          1.18
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Desk_drawer_front_01"
+        ],
+        "offset": [
+          0.3,
+          0,
+          0
+        ],
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "openBodies": [
+      {
+        "body": "Desk_drawers",
+        "front": "+x",
+        "count": 0
+      }
+    ],
+    "duration": 0.66
+  },
+  {
+    "id": "Desk_drawer_front_02",
+    "label": "书桌抽屉",
+    "object": [
+      "Desk_drawer_front_02",
+      "Desk_drawers"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.6,
+          0.64,
+          1.18
+        ],
+        "approach": [
+          1.3,
+          1.18
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Desk_drawer_front_02"
+        ],
+        "offset": [
+          0.3,
+          0,
+          0
+        ],
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "openBodies": [
+      {
+        "body": "Desk_drawers",
+        "front": "+x",
+        "count": 0
+      }
+    ],
+    "duration": 0.66
+  },
+  {
+    "id": "Desk_drawer_front_03",
+    "label": "书桌抽屉",
+    "object": [
+      "Desk_drawer_front_03",
+      "Desk_drawers_01"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.6,
+          0.21,
+          3.07
+        ],
+        "approach": [
+          1.3,
+          3.07
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Desk_drawer_front_03"
+        ],
+        "offset": [
+          0.3,
+          0,
+          0
+        ],
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "openBodies": [
+      {
+        "body": "Desk_drawers_01",
+        "front": "+x",
+        "count": 0
+      }
+    ],
+    "duration": 0.66
+  },
+  {
+    "id": "Desk_drawer_front_04",
+    "label": "书桌抽屉",
+    "object": [
+      "Desk_drawer_front_04",
+      "Desk_drawers_01"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.6,
+          0.43,
+          3.07
+        ],
+        "approach": [
+          1.3,
+          3.07
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Desk_drawer_front_04"
+        ],
+        "offset": [
+          0.3,
+          0,
+          0
+        ],
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "openBodies": [
+      {
+        "body": "Desk_drawers_01",
+        "front": "+x",
+        "count": 0
+      }
+    ],
+    "duration": 0.66
+  },
+  {
+    "id": "Desk_drawer_front_05",
+    "label": "书桌抽屉",
+    "object": [
+      "Desk_drawer_front_05",
+      "Desk_drawers_01"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.6,
+          0.64,
+          3.07
+        ],
+        "approach": [
+          1.3,
+          3.07
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Desk_drawer_front_05"
+        ],
+        "offset": [
+          0.3,
+          0,
+          0
+        ],
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "openBodies": [
+      {
+        "body": "Desk_drawers_01",
+        "front": "+x",
+        "count": 0
+      }
+    ],
+    "duration": 0.66
+  },
+  {
+    "id": "Nightstand_interactive_front0",
+    "label": "床头柜抽屉",
+    "object": [
+      "Nightstand",
+      "Nightstand_interactive_front0"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.5599999999999996,
+          0.1325,
+          4.19775
+        ],
+        "approach": [
+          3.0799999999999996,
+          4.19775
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Nightstand_interactive_front0"
+        ],
+        "offset": [
+          -0.22,
+          0,
+          0
+        ],
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "frontPartition": {
+      "body": "Nightstand",
+      "front": "-x",
+      "kind": "drawer",
+      "count": 2,
+      "index": 0,
+      "name": "Nightstand_interactive_front0"
+    },
+    "duration": 0.66
+  },
+  {
+    "id": "Nightstand_interactive_front1",
+    "label": "床头柜抽屉",
+    "object": [
+      "Nightstand",
+      "Nightstand_interactive_front1"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.5599999999999996,
+          0.3975,
+          4.19775
+        ],
+        "approach": [
+          3.0799999999999996,
+          4.19775
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Nightstand_interactive_front1"
+        ],
+        "offset": [
+          -0.22,
+          0,
+          0
+        ],
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "frontPartition": {
+      "body": "Nightstand",
+      "front": "-x",
+      "kind": "drawer",
+      "count": 2,
+      "index": 1,
+      "name": "Nightstand_interactive_front1"
+    },
+    "duration": 0.66
+  },
+  {
+    "id": "Kitchen_cabinet_interactive_front0",
+    "label": "厨房柜门",
+    "object": [
+      "Kitchen_cabinet",
+      "Kitchen_cabinet_interactive_front0"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          1.3298,
+          0.44,
+          9.120000000000001
+        ],
+        "approach": [
+          1.3298,
+          8.3
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "rotate",
+        "parts": [
+          "Kitchen_cabinet_interactive_front0"
+        ],
+        "pivot": [
+          1.0346000000000002,
+          0.44,
+          9.120000000000001
+        ],
+        "axis": "y",
+        "amount": 1.2,
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "frontPartition": {
+      "body": "Kitchen_cabinet",
+      "front": "-z",
+      "kind": "door",
+      "count": 2,
+      "index": 0,
+      "name": "Kitchen_cabinet_interactive_front0"
+    },
+    "duration": 0.88
+  },
+  {
+    "id": "Kitchen_cabinet_interactive_front1",
+    "label": "厨房柜门",
+    "object": [
+      "Kitchen_cabinet",
+      "Kitchen_cabinet_interactive_front1"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          1.9202,
+          0.44,
+          9.120000000000001
+        ],
+        "approach": [
+          1.9202,
+          8.3
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "rotate",
+        "parts": [
+          "Kitchen_cabinet_interactive_front1"
+        ],
+        "pivot": [
+          2.2154,
+          0.44,
+          9.120000000000001
+        ],
+        "axis": "y",
+        "amount": -1.2,
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "frontPartition": {
+      "body": "Kitchen_cabinet",
+      "front": "-z",
+      "kind": "door",
+      "count": 2,
+      "index": 1,
+      "name": "Kitchen_cabinet_interactive_front1"
+    },
+    "duration": 0.88
+  },
+  {
+    "id": "Vanity_interactive_front0",
+    "label": "洗手台柜门",
+    "object": [
+      "Vanity",
+      "Vanity_interactive_front0"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.35,
+          0.41,
+          7.8149999999999995
+        ],
+        "approach": [
+          2.87,
+          7.8149999999999995
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "rotate",
+        "parts": [
+          "Vanity_interactive_front0"
+        ],
+        "pivot": [
+          3.35,
+          0.41,
+          7.709999999999999
+        ],
+        "axis": "y",
+        "amount": -1.2,
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "frontPartition": {
+      "body": "Vanity",
+      "front": "-x",
+      "kind": "door",
+      "count": 2,
+      "index": 0,
+      "name": "Vanity_interactive_front0"
+    },
+    "duration": 0.88
+  },
+  {
+    "id": "Vanity_interactive_front1",
+    "label": "洗手台柜门",
+    "object": [
+      "Vanity",
+      "Vanity_interactive_front1"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.35,
+          0.41,
+          8.025
+        ],
+        "approach": [
+          2.87,
+          8.025
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "rotate",
+        "parts": [
+          "Vanity_interactive_front1"
+        ],
+        "pivot": [
+          3.35,
+          0.41,
+          8.13
+        ],
+        "axis": "y",
+        "amount": 1.2,
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "frontPartition": {
+      "body": "Vanity",
+      "front": "-x",
+      "kind": "door",
+      "count": 2,
+      "index": 1,
+      "name": "Vanity_interactive_front1"
+    },
+    "duration": 0.88
+  },
+  {
+    "id": "bath_door",
+    "label": "卫生间移门",
+    "object": [
+      "Bath_slider_glass",
+      "Bath_slider_pull"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          2.3,
+          1.1,
+          8
+        ],
+        "approach": [
+          1.75,
+          7.95
+        ],
+        "range": 1.15
+      },
+      {
+        "position": [
+          2.3,
+          1.1,
+          8
+        ],
+        "approach": [
+          2.78,
+          7.95
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "开门",
+          "关门"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Bath_slider_glass",
+          "Bath_slider_pull"
+        ],
+        "offset": [
+          0,
+          0,
+          0.351
+        ],
+        "initial": 1,
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": true
+    },
+    "duration": 0.66
+  },
+  {
+    "id": "entry_door",
+    "label": "入户门",
+    "object": [
+      "Entry_leaf_open",
+      "Entry_handle"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.3,
+          1.05,
+          8.9
+        ],
+        "approach": [
+          0.45,
+          8.12
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "开门",
+          "关门"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "rotate",
+        "parts": [
+          "Entry_leaf_open",
+          "Entry_handle"
+        ],
+        "pivot": [
+          0.01,
+          1.06,
+          9.25
+        ],
+        "axis": "y",
+        "amount": -1.2566370614359172,
+        "initial": 1,
+        "collision": true
+      }
+    ],
+    "state": {
+      "open": true
+    },
+    "duration": 0.88
+  },
+  {
+    "id": "curtains",
+    "label": "米白窗帘",
+    "object": [
+      "Curtain_fold0_0",
+      "Curtain_fold0_1",
+      "Curtain_fold0_2",
+      "Curtain_fold0_3",
+      "Curtain_fold0_4",
+      "Curtain_fold0_5",
+      "Curtain_fold0_6",
+      "Curtain_fold1_0",
+      "Curtain_fold1_1",
+      "Curtain_fold1_2",
+      "Curtain_fold1_3",
+      "Curtain_fold1_4",
+      "Curtain_fold1_5",
+      "Curtain_fold1_6"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          1,
+          1.35,
+          0.11
+        ],
+        "approach": [
+          1.3,
+          0.65
+        ],
+        "range": 1.15
+      },
+      {
+        "position": [
+          3,
+          1.35,
+          0.11
+        ],
+        "approach": [
+          2.65,
+          0.65
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开窗帘",
+          "关闭窗帘"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "transform",
+        "parts": [
+          "Curtain_fold0_0",
+          "Curtain_fold0_1",
+          "Curtain_fold0_2",
+          "Curtain_fold0_3",
+          "Curtain_fold0_4",
+          "Curtain_fold0_5",
+          "Curtain_fold0_6"
+        ],
+        "pivot": [
+          0.57,
+          1.275,
+          0.11
+        ],
+        "closedOffset": [
+          0.71,
+          0,
+          0
+        ],
+        "closedScale": [
+          3.5,
+          1,
+          1
+        ]
+      },
+      {
+        "type": "transform",
+        "parts": [
+          "Curtain_fold1_0",
+          "Curtain_fold1_1",
+          "Curtain_fold1_2",
+          "Curtain_fold1_3",
+          "Curtain_fold1_4",
+          "Curtain_fold1_5",
+          "Curtain_fold1_6"
+        ],
+        "pivot": [
+          3.43,
+          1.275,
+          0.11
+        ],
+        "closedOffset": [
+          -0.71,
+          0,
+          0
+        ],
+        "closedScale": [
+          3.5,
+          1,
+          1
+        ]
+      }
+    ],
+    "state": {
+      "open": true
+    },
+    "duration": 1.15
+  },
+  {
+    "id": "sheer",
+    "label": "白纱",
+    "object": [
+      "White_sheer_left"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          2,
+          1.35,
+          0.06
+        ],
+        "approach": [
+          2,
+          0.7
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开白纱",
+          "关闭白纱"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "transform",
+        "parts": [
+          "White_sheer_left"
+        ],
+        "pivot": [
+          1.244,
+          1.3,
+          0.06
+        ],
+        "closedOffset": [
+          0.756,
+          0,
+          0
+        ],
+        "closedScale": [
+          2.3,
+          1,
+          1
+        ]
+      }
+    ],
+    "state": {
+      "open": true
+    },
+    "duration": 1.15
+  },
+  {
+    "id": "Desk_lamp",
+    "label": "书桌灯",
+    "object": [
+      "Desk_lamp_base",
+      "Desk_lamp_stem",
+      "Desk_lamp_shade"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.31,
+          1.1,
+          1.42
+        ],
+        "approach": [
+          1,
+          1.42
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "on",
+        "labels": [
+          "开灯",
+          "关灯"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "light",
+        "parts": [
+          "Desk_lamp_shade"
+        ],
+        "position": [
+          0.31,
+          1.2000000000000002,
+          1.42
+        ],
+        "color": 16774632,
+        "intensity": 0.85,
+        "distance": 3.2
+      }
+    ],
+    "state": {
+      "on": false
+    },
+    "duration": 0.38
+  },
+  {
+    "id": "Bed_lamp",
+    "label": "床头灯",
+    "object": [
+      "Bed_lamp_base",
+      "Bed_lamp_stem",
+      "Bed_lamp_shade"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.76,
+          0.8500000000000001,
+          4.19775
+        ],
+        "approach": [
+          3.26,
+          4.19775
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "on",
+        "labels": [
+          "开灯",
+          "关灯"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "light",
+        "parts": [
+          "Bed_lamp_shade"
+        ],
+        "position": [
+          3.76,
+          0.9500000000000001,
+          4.19775
+        ],
+        "color": 16774632,
+        "intensity": 0.85,
+        "distance": 3.2
+      }
+    ],
+    "state": {
+      "on": false
+    },
+    "duration": 0.38
+  },
+  {
+    "id": "Floor_lamp",
+    "label": "落地灯",
+    "object": [
+      "Floor_lamp_base",
+      "Floor_lamp_stem",
+      "Floor_lamp_shade"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.7,
+          0.32,
+          6.8375
+        ],
+        "approach": [
+          3.2,
+          6.8375
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "on",
+        "labels": [
+          "开灯",
+          "关灯"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "light",
+        "parts": [
+          "Floor_lamp_shade"
+        ],
+        "position": [
+          3.7,
+          0.42000000000000004,
+          6.8375
+        ],
+        "color": 16774632,
+        "intensity": 0.85,
+        "distance": 3.2
+      }
+    ],
+    "state": {
+      "on": false
+    },
+    "duration": 0.38
+  },
+  {
+    "id": "laptop",
+    "label": "笔记本电脑",
+    "object": [
+      "Desk_laptop_base",
+      "Desk_laptop_screen"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.31,
+          0.95,
+          2.125
+        ],
+        "approach": [
+          1.5,
+          2.125
+        ],
+        "range": 1.25
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "on",
+        "labels": [
+          "打开电脑",
+          "关闭电脑"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "screen",
+        "parts": [
+          "Desk_laptop_screen"
+        ]
+      }
+    ],
+    "state": {
+      "on": false
+    },
+    "duration": 0.38
+  },
+  {
+    "id": "aircon",
+    "label": "空调",
+    "object": [
+      "Air_conditioner",
+      "Air_conditioner_slot"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          0.29,
+          2.3,
+          0.43
+        ],
+        "approach": [
+          1,
+          0.75
+        ],
+        "range": 1.35
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "on",
+        "labels": [
+          "开启空调",
+          "关闭空调"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "emissive",
+        "parts": [
+          "Air_conditioner_slot"
+        ],
+        "color": 7445685,
+        "intensity": 0.8
+      }
+    ],
+    "state": {
+      "on": false
+    },
+    "duration": 0.38
+  },
+  {
+    "id": "hob",
+    "label": "灶具",
+    "object": [
+      "Kitchen_hob",
+      "Burner",
+      "Burner_01"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          1.908,
+          0.95,
+          9.41
+        ],
+        "approach": [
+          1.91,
+          8.62
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "on",
+        "labels": [
+          "打开灶具",
+          "关闭灶具"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "emissive",
+        "parts": [
+          "Burner",
+          "Burner_01"
+        ],
+        "color": 14975556,
+        "intensity": 0.8
+      }
+    ],
+    "state": {
+      "on": false
+    },
+    "duration": 0.38
+  },
+  {
+    "id": "shower",
+    "label": "淋浴",
+    "object": [
+      "Shower_tray",
+      "Shower_riser",
+      "Shower_head"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          2.54,
+          1.75,
+          9.195
+        ],
+        "approach": [
+          2.92,
+          8.8
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "on",
+        "labels": [
+          "打开淋浴",
+          "关闭淋浴"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "water",
+        "parts": [
+          "Shower_head"
+        ],
+        "position": [
+          2.54,
+          2.03,
+          9.195
+        ],
+        "length": 1.8
+      }
+    ],
+    "state": {
+      "on": false
+    },
+    "duration": 0.38
+  },
+  {
+    "id": "living_window",
+    "label": "客厅窗",
+    "object": [
+      "Living_window_glass_interactive_pane",
+      "Living_window_glass_interactive_fixed"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          4,
+          1.625,
+          6.1625000000000005
+        ],
+        "approach": [
+          3.5,
+          6.1625000000000005
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Living_window_glass_interactive_pane"
+        ],
+        "offset": [
+          0,
+          0,
+          0.49999999999999994
+        ]
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "glassPartition": {
+      "body": "Living_window_glass",
+      "axis": "z",
+      "names": [
+        "Living_window_glass_interactive_pane",
+        "Living_window_glass_interactive_fixed"
+      ]
+    },
+    "duration": 0.66
+  },
+  {
+    "id": "bath_window",
+    "label": "卫生间窗",
+    "object": [
+      "Bath_window_glass_interactive_pane",
+      "Bath_window_glass_interactive_fixed"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          3.07,
+          1.6500000000000001,
+          9.7
+        ],
+        "approach": [
+          3.07,
+          9.2
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Bath_window_glass_interactive_pane"
+        ],
+        "offset": [
+          0.5349999999999999,
+          0,
+          0
+        ]
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "glassPartition": {
+      "body": "Bath_window_glass",
+      "axis": "x",
+      "names": [
+        "Bath_window_glass_interactive_pane",
+        "Bath_window_glass_interactive_fixed"
+      ]
+    },
+    "duration": 0.66
+  },
+  {
+    "id": "balcony_window",
+    "label": "阳台玻璃门",
+    "object": [
+      "Balcony_sliding_glass_interactive_pane",
+      "Balcony_sliding_glass_interactive_fixed"
+    ],
+    "interactionPoints": [
+      {
+        "position": [
+          2,
+          1.175,
+          0
+        ],
+        "approach": [
+          2,
+          0.5
+        ],
+        "range": 1.15
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "kind": "toggle",
+        "channel": "open",
+        "labels": [
+          "打开",
+          "关闭"
+        ]
+      }
+    ],
+    "cameraPose": {},
+    "animation": [
+      {
+        "type": "translate",
+        "parts": [
+          "Balcony_sliding_glass_interactive_pane"
+        ],
+        "offset": [
+          1.325,
+          0,
+          0
+        ]
+      }
+    ],
+    "state": {
+      "open": false
+    },
+    "glassPartition": {
+      "body": "Balcony_sliding_glass",
+      "axis": "x",
+      "names": [
+        "Balcony_sliding_glass_interactive_pane",
+        "Balcony_sliding_glass_interactive_fixed"
+      ]
+    },
+    "duration": 0.66
+  }
+]

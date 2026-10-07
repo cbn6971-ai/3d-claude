@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {bindTouchNavigation} from '../dist/touch_navigation.js';
+import {buildRoomModel} from '../dist/scene_model.js';
+const checks=[];
+class Surface {constructor(){this.listeners={};this.style={};this.clientHeight=750;this.clientWidth=393;}addEventListener(n,fn,o){assert.equal(o.passive,false);this.listeners[n]=fn;}removeEventListener(n){delete this.listeners[n];}fire(name,points){let prevented=false;this.listeners[name]({touches:points.map(([clientX,clientY])=>({clientX,clientY})),cancelable:true,preventDefault(){prevented=true;},stopPropagation(){}});assert(prevented);}}
+const surface=new Surface();let camera=new THREE.PerspectiveCamera(42,393/750,.03,200);camera.position.set(-8,14,17);const controls=new OrbitControls(camera,null);controls.enableDamping=false;controls.target.set(2,.55,4.85);controls.minDistance=.5;controls.maxDistance=40;controls.maxPolarAngle=Math.PI/2-.001;controls.update();let wakeCount=0;
+const unbind=bindTouchNavigation(surface,controls,()=>camera,()=>wakeCount++);
+let before=camera.position.clone();surface.fire('touchstart',[[120,300]]);surface.fire('touchmove',[[230,345]]);surface.fire('touchend',[]);assert(camera.position.distanceTo(before)>.1);checks.push('single-finger rotation changes real camera');
+let distance=camera.position.distanceTo(controls.target);surface.fire('touchstart',[[130,300],[210,300]]);surface.fire('touchmove',[[90,300],[250,300]]);assert(camera.position.distanceTo(controls.target)<distance);checks.push('two-finger pinch zooms perspective camera');
+let target=controls.target.clone();surface.fire('touchmove',[[120,320],[280,320]]);assert(controls.target.distanceTo(target)>.1);checks.push('two-finger center motion pans');
+surface.fire('touchend',[[120,320]]);before=camera.position.clone();surface.fire('touchmove',[[140,330]]);assert(camera.position.distanceTo(before)>.01);checks.push('two-to-one finger transition continues');
+surface.fire('touchcancel',[]);surface.fire('touchstart',[[100,300]]);before=camera.position.clone();surface.fire('touchmove',[[130,315]]);assert(camera.position.distanceTo(before)>.01);surface.fire('touchend',[]);checks.push('cancelled gesture recovers on next drag');
+camera=new THREE.OrthographicCamera(-4,4,8,-8,.03,200);camera.position.set(2,19,5);controls.object=camera;controls.target.set(2,0,5);controls.update();surface.fire('touchstart',[[130,300],[210,300]]);surface.fire('touchmove',[[90,300],[250,300]]);assert(camera.zoom>1);surface.fire('touchend',[]);checks.push('orthographic pinch zooms floorplan');
+unbind();assert.equal(Object.keys(surface.listeners).length,0);assert(wakeCount>=12);checks.push('touch handlers clean up');
+const doc=JSON.parse(fs.readFileSync('dist/parameters.json')),spec=JSON.parse(fs.readFileSync('dist/scene.json'));const plane=new THREE.Plane(new THREE.Vector3(0,-1,0),1.15),model=buildRoomModel(doc,spec,plane);
+const names=model.children.flatMap(m=>m.userData.parts);assert.equal(names.length,244);assert.equal(new Set(names).size,244);assert.deepEqual([...names].sort(),spec.nodes.map(n=>n.name).sort());assert(model.children.length<60);checks.push('all 244 parts retained in fewer than 60 draw batches');
+for(const mesh of model.children){assert(mesh.geometry.index);assert(mesh.geometry.attributes.position.count>0);assert(mesh.geometry.attributes.normal);if(mesh.userData.wall&&mesh.userData.layer==='structure')assert.equal(mesh.material.clippingPlanes[0],plane);}
+model.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(model);assert(box.max.y>2.5&&box.max.y<4);assert(box.min.x>-.3&&box.max.x<4.4);assert(box.max.z>9.5&&box.max.z<10.5);checks.push('merged geometry preserves bounds and clipping');
+const html=fs.readFileSync('dist/index.html','utf8');assert(!/<script[^>]+src=/.test(html));assert(!/<link[^>]+href="style.css"/.test(html));assert(!/<img[^>]*\ssrc="(?!data:)/.test(html));assert(!/fetch\('room.glb/.test(fs.readFileSync('dist/viewer.js','utf8')));assert(html.includes('id="room-engine"'));checks.push('entry page needs no external startup assets or GLB replacement');
+const result={version:'1.2.1',passed:true,checks,drawBatches:model.children.length,sourceParts:names.length,htmlBytes:Buffer.byteLength(html),verification:'Node with real Three.js camera/math/geometry and synthetic Touch Events; no browser or physical iPhone execution'};fs.writeFileSync('dist/mobile_checks.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));

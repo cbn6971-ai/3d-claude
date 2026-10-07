@@ -1,0 +1,47 @@
+{
+  "version": "1.2.1",
+  "parameter_file": "model/parameters.json",
+  "parameters": 88,
+  "geometric_nodes": 244,
+  "blender_version": "4.5.3 LTS",
+  "coordinate_mapping": "parameters(x,y,z)->Blender(x,-y,z)->GLB(x,z,y)",
+  "known_approximate_dimensions": {
+    "body_width_m": 4,
+    "body_depth_m": 7.5,
+    "balcony_azimuth_deg": 300
+  },
+  "estimated_service_depth_m": 2.2,
+  "next_checks": [
+    "7.5米测量范围",
+    "卫生间外窗所在墙",
+    "卧室门扇",
+    "阳台深度"
+  ],
+  "viewer_tested": "v1.2.1 Node: 28 life/feel checks + 10 Viewer touch/geometry + 4 integration = 42 passed; no browser/GPU/physical Safari verification",
+  "native_usdz": "open-top, 243 meshes, verified by import; not physical iPhone",
+  "viewer_startup": "single HTML, no external startup assets, no background GLB replacement",
+  "viewer_startup_fault_checks": "6 historical v1.0.1 checks; not rerun for v1.0.2",
+  "viewer_rendering": "244 semantic parts / 29 merged draw batches, Lambert, on demand",
+  "roaming": {
+    "mode": "first-person life simulation",
+    "entry": "漫游",
+    "standing_eye_height_m": 1.62,
+    "fov_deg": 70,
+    "interaction_objects": 32,
+    "configuration": "dist/interaction_config.json",
+    "normal_movement": "left joystick, independent right look, camera-relative collision movement",
+    "postures": "chair/desk/sofa/bed/toilet; smooth camera pose and safe stand-up; head turning while seated/lying",
+    "sleep": "pillow view plus gradual closed eyes; no time simulation",
+    "scene_adapter": "runtime moving parts and front partitions of existing envelopes; original house exports unchanged",
+    "viewer_preservation": "restores camera, FOV, layers, mode and Touch Events",
+    "model_regenerated": false,
+    "interaction_feel": {
+      "reach_m": "1.15 typical, laptop 1.25, aircon 1.35",
+      "focus": "120ms acquire / 200ms switch / 180ms loss; aim hysteresis + occlusion + exact reach revalidation",
+      "prompt": "180ms in / 120ms out; crossfade; no invisible actionable controls",
+      "posture": "quintic easing, swept 45mm eye clearance and safe corner rounding",
+      "motion": "critical damping with momentum-preserving reverse, per-config duration",
+      "movement": "dead zone, exponential start/stop/turn smoothing; head bob <=3mm"
+    }
+  }
+}

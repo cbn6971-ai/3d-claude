@@ -1,0 +1,734 @@
+{
+  "schema_version": 1,
+  "coordinate_system": {
+    "unit": "meter",
+    "x": "B图向右",
+    "y": "B图向下，从阳台门线向入户端",
+    "z": "向上",
+    "origin": "主体左内墙与阳台门线交点",
+    "gltf_mapping": "parameter (x,y,z) -> Blender (x,-y,z) -> GLB (x,z,y)"
+  },
+  "parameters": {
+    "body_width": {
+      "value": 4.0,
+      "unit": "m",
+      "status": "user_approximate",
+      "source": "用户明确说明",
+      "confidence": "high",
+      "note": "主体宽度；暂按内侧净宽解释，未经实测。"
+    },
+    "body_depth": {
+      "value": 7.5,
+      "unit": "m",
+      "status": "user_approximate",
+      "source": "用户明确说明",
+      "confidence": "high",
+      "note": "仅卧室+客厅；是否包含厨卫尚未实测。"
+    },
+    "balcony_azimuth": {
+      "value": 300,
+      "unit": "degree",
+      "status": "user_approximate",
+      "source": "用户明确说明及B组标注",
+      "confidence": "high",
+      "note": "北=0°，顺时针；不用B组印刷北箭头决定几何旋转。"
+    },
+    "bedroom_fraction": {
+      "value": 0.645,
+      "unit": "ratio",
+      "status": "estimated",
+      "source": "B组图像分区比例",
+      "confidence": "medium",
+      "note": "卧室占主体长度；B图不是有尺寸的施工图。"
+    },
+    "service_depth": {
+      "value": 2.2,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C组厨卫拓扑+A3视角",
+      "confidence": "low",
+      "note": "在主体7.5m外另加厨卫；与B图整体纵横比不完全一致。"
+    },
+    "wall_height": {
+      "value": 2.75,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A组门高及墙高目测",
+      "confidence": "medium",
+      "note": ""
+    },
+    "outer_wall_thickness": {
+      "value": 0.18,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B组示意线宽",
+      "confidence": "medium",
+      "note": "线宽不等于真实墙厚。"
+    },
+    "inner_wall_thickness": {
+      "value": 0.12,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B组示意线宽",
+      "confidence": "medium",
+      "note": ""
+    },
+    "floor_thickness": {
+      "value": 0.12,
+      "unit": "m",
+      "status": "estimated",
+      "source": "建模暂定",
+      "confidence": "medium",
+      "note": ""
+    },
+    "balcony_depth": {
+      "value": 0.75,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1可见门外地面",
+      "confidence": "low",
+      "note": "低可信；米家未单独显示阳台，B图标题合并阳台/落地窗。"
+    },
+    "balcony_width": {
+      "value": 2.8,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1及B组门宽",
+      "confidence": "medium",
+      "note": "低可信；只建可见浅平台，不虚构封闭阳台房间。"
+    },
+    "balcony_x": {
+      "value": 0.6,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B组门宽居中比例",
+      "confidence": "medium",
+      "note": ""
+    },
+    "balcony_door_width": {
+      "value": 2.8,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图横向比例+A1",
+      "confidence": "medium",
+      "note": ""
+    },
+    "balcony_door_x": {
+      "value": 0.6,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图横向比例",
+      "confidence": "medium",
+      "note": ""
+    },
+    "balcony_door_height": {
+      "value": 2.35,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1",
+      "confidence": "medium",
+      "note": "包含上亮；玻璃门主体与上亮另分。"
+    },
+    "balcony_door_transom": {
+      "value": 0.35,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bedroom_opening_x": {
+      "value": 0.76,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C组隔墙缺口",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bedroom_opening_width": {
+      "value": 0.9,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C组隔墙缺口",
+      "confidence": "medium",
+      "note": "C表现门洞，B无门扇；先保留通行缺口。"
+    },
+    "bedroom_opening_height": {
+      "value": 2.2,
+      "unit": "m",
+      "status": "estimated",
+      "source": "C组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "kitchen_left_x": {
+      "value": 0.95,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C组",
+      "confidence": "medium",
+      "note": "保留厨房左墙，厨房面向客厅开放。"
+    },
+    "bathroom_left_x": {
+      "value": 2.3,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bathroom_door_offset": {
+      "value": 0.16,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B组+A3",
+      "confidence": "medium",
+      "note": "门在卫生间左墙靠客厅端。"
+    },
+    "bathroom_door_width": {
+      "value": 0.78,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B组+A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bathroom_door_height": {
+      "value": 2.15,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "entry_offset_from_end": {
+      "value": 0.45,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C组",
+      "confidence": "medium",
+      "note": "入户门在左外墙靠厨卫端。"
+    },
+    "entry_width": {
+      "value": 0.85,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图+A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "entry_height": {
+      "value": 2.12,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "living_window_offset": {
+      "value": 0.75,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C组+A3",
+      "confidence": "medium",
+      "note": "相对卧室客厅分界向入户端。"
+    },
+    "living_window_width": {
+      "value": 1.15,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C组+A3",
+      "confidence": "medium",
+      "note": "沿右外墙的长度。"
+    },
+    "living_window_sill": {
+      "value": 0.85,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "living_window_height": {
+      "value": 1.55,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bath_window_x": {
+      "value": 2.46,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": "C似在右墙，B在底墙；本版按B。"
+    },
+    "bath_window_width": {
+      "value": 1.22,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bath_window_sill": {
+      "value": 1.1,
+      "unit": "m",
+      "status": "estimated",
+      "source": "C组三/四角度目测",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bath_window_height": {
+      "value": 1.1,
+      "unit": "m",
+      "status": "estimated",
+      "source": "C组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bed_length": {
+      "value": 2.03,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2+B图",
+      "confidence": "medium",
+      "note": "长度沿x轴，床头靠右墙。"
+    },
+    "bed_width": {
+      "value": 1.5,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2+B图",
+      "confidence": "medium",
+      "note": "宽度沿y轴。"
+    },
+    "bed_frame_height": {
+      "value": 0.26,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bed_mattress_height": {
+      "value": 0.2,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bed_head_height": {
+      "value": 1.1,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bed_right_gap": {
+      "value": 0.1,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bed_y_fraction": {
+      "value": 0.66,
+      "unit": "ratio",
+      "status": "estimated",
+      "source": "B图床心比例",
+      "confidence": "medium",
+      "note": ""
+    },
+    "wardrobe_width": {
+      "value": 1.1,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1/A2+B图",
+      "confidence": "medium",
+      "note": "沿y轴；衣柜侧靠右墙、靠阳台端。"
+    },
+    "wardrobe_depth": {
+      "value": 0.58,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1/A2",
+      "confidence": "medium",
+      "note": ""
+    },
+    "wardrobe_height": {
+      "value": 2.1,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1/A2",
+      "confidence": "medium",
+      "note": ""
+    },
+    "wardrobe_front_offset": {
+      "value": 0.18,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "desk_length": {
+      "value": 2.35,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1+B图",
+      "confidence": "medium",
+      "note": "沿左墙y轴。"
+    },
+    "desk_depth": {
+      "value": 0.58,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1",
+      "confidence": "medium",
+      "note": ""
+    },
+    "desk_height": {
+      "value": 0.75,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1",
+      "confidence": "medium",
+      "note": ""
+    },
+    "desk_front_offset": {
+      "value": 0.95,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "desk_left_gap": {
+      "value": 0.02,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1",
+      "confidence": "medium",
+      "note": ""
+    },
+    "desk_chair_width": {
+      "value": 0.5,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1",
+      "confidence": "medium",
+      "note": ""
+    },
+    "desk_chair_depth": {
+      "value": 0.55,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1",
+      "confidence": "medium",
+      "note": ""
+    },
+    "nightstand_width": {
+      "value": 0.43,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2",
+      "confidence": "medium",
+      "note": ""
+    },
+    "nightstand_depth": {
+      "value": 0.4,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2",
+      "confidence": "medium",
+      "note": ""
+    },
+    "nightstand_height": {
+      "value": 0.53,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2",
+      "confidence": "medium",
+      "note": ""
+    },
+    "sofa_width": {
+      "value": 1.9,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3+B/C图",
+      "confidence": "medium",
+      "note": "沿隔墙横向摆放，靠右，不旋转。"
+    },
+    "sofa_depth": {
+      "value": 0.8,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "sofa_height": {
+      "value": 0.83,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "sofa_right_gap": {
+      "value": 0.2,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "sofa_back_gap": {
+      "value": 0.12,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B/C图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "coffee_width": {
+      "value": 0.85,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "coffee_depth": {
+      "value": 0.55,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "coffee_height": {
+      "value": 0.43,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "coffee_gap": {
+      "value": 0.36,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "counter_depth": {
+      "value": 0.58,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图+A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "counter_height": {
+      "value": 0.88,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3",
+      "confidence": "medium",
+      "note": ""
+    },
+    "cabinet_width_fraction": {
+      "value": 0.96,
+      "unit": "ratio",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "vanity_width": {
+      "value": 0.55,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "vanity_depth": {
+      "value": 0.42,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "vanity_height": {
+      "value": 0.82,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "toilet_width": {
+      "value": 0.36,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "toilet_depth": {
+      "value": 0.68,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "toilet_height": {
+      "value": 0.76,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "shower_width": {
+      "value": 0.72,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "shower_depth": {
+      "value": 0.85,
+      "unit": "m",
+      "status": "estimated",
+      "source": "B图",
+      "confidence": "medium",
+      "note": ""
+    },
+    "rug_bed_width": {
+      "value": 1.55,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2/D组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "rug_bed_depth": {
+      "value": 2.0,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A2/D组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "rug_living_width": {
+      "value": 2.15,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3/D组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "rug_living_depth": {
+      "value": 1.45,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A3/D组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "curtain_stack_width": {
+      "value": 0.33,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1/D组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "curtain_height": {
+      "value": 2.55,
+      "unit": "m",
+      "status": "estimated",
+      "source": "A1/D组",
+      "confidence": "medium",
+      "note": ""
+    },
+    "cart_width": {
+      "value": 0.36,
+      "unit": "m",
+      "status": "estimated",
+      "source": "D5",
+      "confidence": "medium",
+      "note": "新增可隐藏的软装示意。"
+    },
+    "cart_depth": {
+      "value": 0.43,
+      "unit": "m",
+      "status": "estimated",
+      "source": "D5",
+      "confidence": "medium",
+      "note": ""
+    },
+    "cart_height": {
+      "value": 0.78,
+      "unit": "m",
+      "status": "estimated",
+      "source": "D5",
+      "confidence": "medium",
+      "note": ""
+    },
+    "bath_window_wall": {
+      "value": "end",
+      "unit": "enum",
+      "status": "estimated",
+      "source": "B优先于C",
+      "confidence": "low",
+      "note": "未解决冲突；可改right。"
+    },
+    "bedroom_has_door": {
+      "value": false,
+      "unit": "enum",
+      "status": "estimated",
+      "source": "B优先于C",
+      "confidence": "medium",
+      "note": "B无门扇；C有门洞而未清晰显示门扇。"
+    },
+    "floor_finish": {
+      "value": "gray_tile",
+      "unit": "enum",
+      "status": "estimated",
+      "source": "A1/A2/A3",
+      "confidence": "medium",
+      "note": "D木地板只作风格参考，当前保留实拍灰砖。"
+    }
+  },
+  "palette": {
+    "wall": "#eeeef0",
+    "white": "#ecece8",
+    "wood": "#cfba99",
+    "gray": "#bcbfc3",
+    "oat": "#d8d2c5",
+    "tile": "#b9bcc1",
+    "dark": "#30343a",
+    "glass": "#c0d9e1",
+    "green": "#628062"
+  },
+  "unresolved_conflicts": [
+    "7.5m范围与B图纵横比不一致，按用户所说仅主体解释",
+    "卫生间窗：B底墙，C似右墙",
+    "卧室通道：B缺口，C门洞",
+    "阳台深度缺少反向照片"
+  ]
+}

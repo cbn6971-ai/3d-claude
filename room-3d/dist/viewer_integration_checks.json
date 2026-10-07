@@ -1,0 +1,11 @@
+{
+  "version": "1.2.1",
+  "passed": true,
+  "checks": [
+    "floorplan → first-person → original camera/layers/touch handlers restored",
+    "decoration → first-person → original camera/layers/touch handlers restored",
+    "immersive → first-person → original camera/layers/touch handlers restored",
+    "twenty full Viewer enter/exit cycles retain original touch handlers"
+  ],
+  "verification": "Actual viewer.js executed in Node with real Three.js/OrbitControls, DOM event doubles and a stub renderer; no browser or GPU execution"
+}

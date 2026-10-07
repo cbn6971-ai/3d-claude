@@ -4,14 +4,14 @@
   "checks": [
     "scene.json semantic parts are unchanged in count, names, positions and sizes",
     "styled furniture stays inside its semantic envelope (colliders and poses remain valid)",
-    "collision boxes still enclose the visible furniture they stand for",
+    "collision proxies enclose the visible furniture they stand for",
     "moving parts keep their envelope so door/drawer collision and animation pivots match",
     "seated, lying and sleeping camera poses do not clip into new cushions or decor",
     "floor-standing decor is inside existing colliders or outside the walkable house",
     "materials are physically based with separated fabric, wood, tile, metal and glass response"
   ],
-  "drawBatches": 46,
-  "triangles": 112032,
-  "decorPieces": 45,
+  "drawBatches": 47,
+  "triangles": 134396,
+  "decorPieces": 64,
   "verification": "Node with real Three.js geometry, the actual InteractionSystem configuration and collision builder; no browser or physical iPhone execution"
 }

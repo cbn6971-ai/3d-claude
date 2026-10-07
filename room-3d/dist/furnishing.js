@@ -179,9 +179,19 @@ function panelDoor(s,front){// Wardrobe-style door: slab plus raised frame mould
 }
 function frontPanel(r){return (n,s)=>rbox(s.x,s.y,s.z,r,2);}
 const rounded=r=>(n,s)=>rbox(s.x,s.y,s.z,r,2);
-const carcass=r=>(n,s)=>rbox(s.x,s.y,s.z,r,2);
+const carcass=r=>(n,s)=>n.carcass?panelCarcass(s,n.carcass):rbox(s.x,s.y,s.z,r,2);
+// Open cabinet carcass built from real boards (back, top, bottom, two sides), open on `front`.
+// Used when a body's doors/drawers are separate moving parts, so the opened cabinet has
+// visible board thickness and an interior instead of a hollow shell.
+function panelCarcass(s,front,inset=0,t=.016){const w=s.x-2*inset,h=s.y-2*inset,d=s.z-2*inset,sign=front[0]==='-'?-1:1,b=(x,y,z,dx,dy,dz)=>place(rbox(dx,dy,dz,.0025,1),x,y,z);
+ if(front[1]==='x')return combine([b(-sign*(w/2-t/2),0,0,t,h,d),b(sign*t/2,h/2-t/2,0,w-t,t,d),b(sign*t/2,-h/2+t/2,0,w-t,t,d),b(sign*t/2,0,d/2-t/2,w-t,h-2*t,t),b(sign*t/2,0,-d/2+t/2,w-t,h-2*t,t)]);
+ return combine([b(0,0,-sign*(d/2-t/2),w,h,t),b(0,h/2-t/2,sign*t/2,w,t,d-t),b(0,-h/2+t/2,sign*t/2,w,t,d-t),b(w/2-t/2,0,sign*t/2,t,h-2*t,d-t),b(-w/2+t/2,0,sign*t/2,t,h-2*t,d-t)]);}
+// Drawer box: bottom, two sides and back; the moving front panel closes the fourth side.
+function drawerBox(s,front,t=.012){const sign=front[0]==='-'?-1:1,b=(x,y,z,dx,dy,dz)=>place(rbox(dx,dy,dz,.002,1),x,y,z);
+ return combine([b(0,-s.y/2+t/2,0,s.x,t,s.z),b(0,0,s.z/2-t/2,s.x,s.y,t),b(0,0,-s.z/2+t/2,s.x,s.y,t),b(-sign*(s.x/2-t/2),0,0,t,s.y,s.z-2*t),place(rbox(s.x-.02,.003,s.z-2*t-.004,.001),0,-s.y/2+t+.0015,0)]);}
 
 const STYLES=[
+ [/_box$/,(n,s)=>drawerBox(s,n.front||'+x')],
  // ------------------------------------------------ bed
  [/^Bed_frame$/,(n,s)=>combine([place(rbox(s.x,s.y-.07,s.z,.022,3),0,.035,0),place(new THREE.BoxGeometry(s.x-.14,.07,s.z-.14),0,-s.y/2+.035,0)])],
  [/^Bed_mattress$/,(n,s)=>rbox(s.x,s.y,s.z,.05,3),{material:'linen'}],
@@ -195,7 +205,7 @@ const STYLES=[
  [/^Cream_throw$/,(n,s,ctx)=>({world:throwGeometry(ctx.bed,n)}),{material:'knit'}],
  [/^(Bed_rug|Living_rug)$/,(n,s)=>rbox(s.x,s.y,s.z,.008,2),{material:'rug'}],
  // ------------------------------------------------ wardrobe
- [/^Wardrobe_body$/,(n,s)=>combine([place(rbox(s.x,s.y-.05,s.z,.012,2),0,-.025,0),place(rbox(s.x+.006,.05,s.z+.012,.006),0,s.y/2-.025,0)])],
+ [/^Wardrobe_body$/,(n,s)=>n.carcass?combine([panelCarcass({x:s.x,y:s.y-.05,z:s.z},n.carcass).translate(0,-.025,0),place(rbox(s.x+.006,.05,s.z+.012,.006),0,s.y/2-.025,0)]):combine([place(rbox(s.x,s.y-.05,s.z,.012,2),0,-.025,0),place(rbox(s.x+.006,.05,s.z+.012,.006),0,s.y/2-.025,0)])],
  [/^Wardrobe_door/,(n,s)=>panelDoor(s,'-x')],
  [/^Wardrobe_handle/,(n,s)=>combine([place(cyl(.0062,.0062,s.y*.95,14),-s.x/2+.0062,0,0),...[-1,1].map(k=>place(cyl(.0045,.0045,s.x-.004,10),0,k*s.y*.36,0,0,0,Math.PI/2))])],
  // ------------------------------------------------ desk + chair
@@ -211,7 +221,7 @@ const STYLES=[
  [/^Chair_wheel/,()=>combine([...[-1,1].map(k=>place(cyl(.028,.028,.011,18),0,k*.0075,0)),cyl(.012,.012,.028,10)])],
  // ------------------------------------------------ bedroom misc
  [/^Air_conditioner$/,(n,s)=>combine([rbox(s.x,s.y,s.z,.05,3),place(rbox(.004,.012,s.z-.12,.002),s.x/2,.07,0)])],
- [/^Nightstand$/,(n,s)=>n.carcass?rbox(s.x-.016,s.y-.016,s.z-.016,.003):combine([rbox(s.x-.016,s.y-.016,s.z-.016,.003),...[0,1].map(i=>place(rbox(.018,s.y/2-.016,s.z-.025,.003),-s.x/2+.009,(i-.5)*s.y/2,0))])],
+ [/^Nightstand$/,(n,s)=>n.carcass?panelCarcass(s,n.carcass,.008):combine([rbox(s.x-.016,s.y-.016,s.z-.016,.003),...[0,1].map(i=>place(rbox(.018,s.y/2-.016,s.z-.025,.003),-s.x/2+.009,(i-.5)*s.y/2,0))])],
  [/^Nightstand_interactive_front/,frontPanel(.003)],
  // ------------------------------------------------ sofa + table
  [/^Sofa_base$/,(n,s)=>rbox(s.x-.03,s.y,s.z-.01,.035,3)],
@@ -222,18 +232,25 @@ const STYLES=[
  [/^Coffee_leg/,(n,s)=>place(rbox(s.x,s.y-.03,s.z,.005),0,-.015,0)],
  [/^Coffee_cup$/,(n,s)=>{const h=s.y/2;return combine([lathe([[0,-h],[.033,-h],[.036,-h+.004],[.037,h],[.033,h],[.032,-h+.008],[0,-h+.008]],22),place(new THREE.TorusGeometry(.018,.0045,8,16,Math.PI),.036,0,0,0,0,-Math.PI/2)]);},{material:'ceramic'}],
  // ------------------------------------------------ kitchen / bath
- [/^Kitchen_cabinet$/,(n,s)=>n.carcass?rbox(s.x,s.y,s.z,.004):combine([place(rbox(s.x,s.y,s.z-.02,.004),0,0,.01),...[0,1].map(i=>place(rbox(s.x/2-.014,s.y-.024,.018,.003),(i-.5)*s.x/2,0,-s.z/2+.009))])],
+ [/^Kitchen_cabinet$/,(n,s)=>n.carcass?panelCarcass({x:s.x,y:s.y,z:s.z-.02},n.carcass).translate(0,0,.01):combine([place(rbox(s.x,s.y,s.z-.02,.004),0,0,.01),...[0,1].map(i=>place(rbox(s.x/2-.014,s.y-.024,.018,.003),(i-.5)*s.x/2,0,-s.z/2+.009))])],
  [/^Kitchen_cabinet_interactive_front/,frontPanel(.003)],
  [/^Kitchen_counter$/,rounded(.004),{material:'ceramic'}],
  [/^Kitchen_sink$/,(n,s)=>combine([place(rbox(s.x,.006,s.z,.03,3),0,s.y/2-.003,0),place(rbox(s.x-.05,.012,s.z-.05,.025,3),0,-.002,0)])],
  [/^Kitchen_hob$/,rounded(.006)],
  [/^Burner/,(n,s)=>combine([place(new THREE.TorusGeometry(.052,.006,6,28),0,0,0,Math.PI/2),cyl(.024,.026,.008,16)])],
  [/^Range_hood$/,(n,s)=>{const sh=new THREE.Shape(),hz=s.z/2,hy=s.y/2;sh.moveTo(-hz,-hy);sh.lineTo(hz,-hy);sh.lineTo(hz,hy);sh.lineTo(-hz+.16,hy);sh.lineTo(-hz,-hy+.05);sh.lineTo(-hz,-hy);const g=new THREE.ExtrudeGeometry(sh,{depth:s.x-.01,bevelEnabled:true,bevelThickness:.005,bevelSize:.005,bevelSegments:1});g.rotateY(-Math.PI/2);g.translate((s.x-.01)/2,0,0);return g;}],
- [/^Vanity$/,(n,s)=>n.carcass?rbox(s.x,s.y,s.z,.004):combine([place(rbox(s.x-.02,s.y,s.z,.004),.01,0,0),...[0,1].map(i=>place(rbox(.018,s.y-.024,s.z/2-.014,.003),-s.x/2+.009,0,(i-.5)*s.z/2))])],
+ [/^Vanity$/,(n,s)=>n.carcass?panelCarcass({x:s.x-.02,y:s.y,z:s.z},n.carcass).translate(.01,0,0):combine([place(rbox(s.x-.02,s.y,s.z,.004),.01,0,0),...[0,1].map(i=>place(rbox(.018,s.y-.024,s.z/2-.014,.003),-s.x/2+.009,0,(i-.5)*s.z/2))])],
  [/^Vanity_interactive_front/,frontPanel(.003)],
  [/^Vanity_basin$/,(n,s)=>place(blob(s.x*1.9,s.y*1.6,s.z*1.9,{r:0.85,pinch:0}),0,-.01,0),{material:'ceramic'}],
  [/^Vanity_mirror$/,rounded(.006)],
- [/^Toilet_bowl$/,(n,s)=>blob(s.x*1.9,s.y*1.85,s.z*1.85,{r:0.95,pinch:.05}),{material:'ceramic'}],
+ // Pedestal bowl: foot on the floor, flared elliptical rim, hollow glazed interior.
+ [/^Toilet_bowl$/,(n,s)=>{const g=lathe([[0,-.32],[.60,-.32],[.585,-.27],[.53,-.15],[.57,-.04],[.76,.07],[.92,.15],[.995,.19],[.99,.203],[.93,.207],[.82,.17],[.6,.09],[.36,.03],[.3,.026],[0,.026]],44);g.scale(s.x*.95,1,s.z*.92);return g;},{material:'ceramic'}],
+ [/^Toilet_seat$/,(n,s)=>{const sh=new THREE.Shape();sh.absellipse(0,0,s.x/2,s.z/2,0,TAU);const hole=new THREE.Path();hole.absellipse(0,.015,s.x/2-.058,s.z/2-.075,0,TAU,true);sh.holes.push(hole);const g=new THREE.ExtrudeGeometry(sh,{depth:s.y-.008,bevelEnabled:true,bevelThickness:.004,bevelSize:.006,bevelSegments:2,curveSegments:36});g.rotateX(-Math.PI/2);g.translate(0,-s.y/2+.004,0);return g;}],
+ [/^Toilet_lid$/,(n,s)=>{const sh=new THREE.Shape();sh.absellipse(0,0,s.x/2-.006,s.z/2-.006,0,TAU);const g=new THREE.ExtrudeGeometry(sh,{depth:s.y-.012,bevelEnabled:true,bevelThickness:.006,bevelSize:.006,bevelSegments:3,curveSegments:40});g.rotateX(-Math.PI/2);g.translate(0,-s.y/2+.006,0);return g;}],
+ [/^Kitchen_knob\d$/,(n,s)=>combine([lathe([[0,-s.y/2],[s.x,-s.y/2],[s.x,-s.y/2+.004],[s.x*.9,s.y/2-.002],[s.x*.8,s.y/2],[0,s.y/2]],28),place(rbox(s.x*1.5,.009,.008,.003),0,s.y/2+.002,0),place(rbox(.004,.002,.006,.001),s.x*.62,s.y/2+.007,0)])],
+ [/^Range_hood_(filter)$/,(n,s)=>combine([rbox(s.x,s.y,s.z,.001),...Array.from({length:9},(_,i)=>place(new THREE.BoxGeometry(.004,.002,s.z-.03),-s.x/2+.05+i*(s.x-.1)/8,-.0015,0))])],
+ [/^Range_hood_(light|led|panel)$/,(n,s)=>rbox(s.x,s.y,s.z,Math.min(s.x,s.y,s.z)*.3,1)],
+ [/^Extractor_pipe$/,(n,s)=>place(rbox(.26,s.y,.22,.006,2),0,0,.03),{material:'metal'}],
  [/^Toilet_tank$/,rounded(.04),{material:'ceramic'}],
  [/^Shower_tray$/,rounded(.03),{material:'ceramic'}],
  // ------------------------------------------------ soft furnishing
@@ -301,7 +318,7 @@ function finish(g,{grain,uv}={}){if(uv==='keep'){indexed(g);for(const k of Objec
 const geometryCache=new Map();
 // World-space geometry for one semantic node (indexed, position/normal/uv).
 export function styledGeometry(n,ctx=defaultContext){
- const cacheKey=n.name+'|'+JSON.stringify([n.position,n.size,n.rotation,!!n.carcass]);
+ const cacheKey=n.name+"|"+JSON.stringify([n.position,n.size,n.rotation,n.carcass||""]);
  const cached=geometryCache.get(cacheKey);if(cached!==undefined)return cached&&cached.clone();
  const style=styleFor(n.name),detail=['furniture','soft'].includes(n.layer);let local=null,world=null;
  if(style&&ctx){const r=style.build(n,S(n),ctx);if(r&&r.world)world=r.world;else local=r;if(r===null&&!world){geometryCache.set(cacheKey,null);return null;}}
@@ -310,6 +327,30 @@ export function styledGeometry(n,ctx=defaultContext){
  finish(g,{grain:style?.opts.grain||'x',uv:style?.opts.uv});
  geometryCache.set(cacheKey,g);return g.clone();
 }
+
+// ---------------------------------------------------------------- virtual parts
+// Real moving/working parts that the v1 scene.json never had (drawer boxes, toilet seat and
+// lid, hob knobs, hood light/controls). Same node format; marked virtual so scene.json,
+// the Blender exports and the 244-part checks stay untouched.
+export function virtualNodes(list){
+ const nodes=list instanceof Map?list:new Map(list.map(n=>[n.name,n])),out=[],v=(name,shape,position,size,material,extra={})=>out.push({name,shape,position,size,material,layer:'furniture',rotation:[0,0,0],virtual:true,...extra});
+ for(const n of nodes.values())if(/^Desk_drawer_front(_\d+)?$/.test(n.name)){const [x,y,z]=n.position,back=x-n.size[0]/2,depth=.47;v(n.name+'_box','box',[back-depth/2,y,z-.01],[depth,n.size[1]-.04,.13],'white',{front:'+x'});}
+ const ns=nodes.get('Nightstand');if(ns){const [x,y,z]=ns.position,[w,d,h]=ns.size,face=x-w/2+.009,depth=.33;for(let i=0;i<2;i++){const fc=z+(i-.5)*h/2;v('Nightstand_interactive_front'+i+'_box','box',[face+depth/2,y,fc-.0195],[depth,d-.06,.17],'white',{front:'-x'});}}
+ const bowl=nodes.get('Toilet_bowl');if(bowl){const [x,y,z]=bowl.position,top=z+.205,hinge=y+.16;v('Toilet_seat','box',[x,hinge-.205,top+.011],[.35,.41,.022],'ceramic');v('Toilet_lid','box',[x,hinge-.21,top+.035],[.36,.42,.026],'ceramic');}
+ const hob=nodes.get('Kitchen_hob');if(hob){const [x,y,z]=hob.position,top=z+hob.size[2]/2;[-.148,.152].forEach((dx,i)=>v('Kitchen_knob'+i,'cylinder',[x+dx,y-hob.size[1]/2+.025,top+.008],[.021,.021,.016],'metal'));}
+ const hood=nodes.get('Range_hood');if(hood){const [x,y,z]=hood.position,[w,d,h]=hood.size,bottom=z-h/2,front=y-d/2;
+  v('Range_hood_filter','box',[x,y+.03,bottom-.002],[w-.07,d-.08,.003],'metal');v('Range_hood_light','box',[x,front+.05,bottom-.0035],[.26,.035,.003],'white');
+  v('Range_hood_panel','box',[x+w/2-.10,front-.003,bottom+.026],[.12,.005,.028],'metal');v('Range_hood_led','box',[x+w/2-.052,front-.006,bottom+.026],[.007,.003,.007],'white');}
+ return out;
+}
+export function withVirtualNodes(spec){if(spec.virtual)return spec;const extra=virtualNodes(spec.nodes);return {...spec,nodes:[...spec.nodes,...extra],virtual:true};}
+
+// Low-cost gas flame: one merged ring of tapered tongues with a blue-to-dark vertex
+// gradient, drawn additively (dark = transparent). Scaled per frame by burner level.
+export function createFlameGeometry(radius=.052){const parts=[];const ring=(count,r,len,w,tilt,phase)=>{for(let i=0;i<count;i++){const a=phase+i/count*TAU,g=new THREE.ConeGeometry(w,len,5,1,true);g.translate(0,len/2,0);g.rotateX(tilt);g.rotateY(-a+Math.PI/2);g.translate(Math.cos(a)*r,0,Math.sin(a)*r);parts.push(g);}};
+ ring(22,radius,.034,.0075,-.42,0);ring(12,radius*.55,.022,.0055,-.25,.3);
+ const g=mergeGeometries(parts.map(p=>{p.deleteAttribute('uv');return p;}));parts.forEach(p=>p.dispose());const pos=g.attributes.position,col=new Float32Array(pos.count*3);
+ for(let i=0;i<pos.count;i++){const t=Math.min(1,Math.max(0,pos.getY(i)/.034));col[i*3]=.22*(1-t)+.05*t;col[i*3+1]=.42*(1-t)+.10*t;col[i*3+2]=1.0*(1-t)+.30*t;}g.setAttribute('color',new THREE.BufferAttribute(col,3));return g;}
 
 // ---------------------------------------------------------------- decor
 // Small objects that do not exist as semantic parts. They are static, sit on or
@@ -424,6 +465,17 @@ export function decorPieces(spec){
   add('Kitchen_board','soft','wood',place(rbox(.30,.42,.018,.03),s.x-.03,top+.215,back+.025,.10,0,0),{grain:'y'});
   if(hob){const h=pos(hob);add('Kitchen_kettle','soft','ceramic',combine([lathe([[0,0],[.075,0],[.08,.01],[.085,.08],[.072,.17],[.05,.19],[.05,.20],[0,.20]],24).translate(h.x+.12,top+.02,h.z+.06),place(new THREE.TorusGeometry(.06,.009,8,16,Math.PI),h.x+.12,top+.22,h.z+.06,0,0,0)]));}
  }
+ // Cabinet interiors, seen once doors open: wardrobe shelf, rail and hanging clothes;
+ // a shelf in the kitchen and vanity cabinets; water in the toilet bowl.
+ if(wb){const p=pos(wb),s=size(wb),x0=p.x-s.x/2,z0=p.z-s.z/2,z1=p.z+s.z/2,cx=p.x+.02;
+  add('Wardrobe_shelf','furniture','white',place(rbox(s.x-.05,.018,s.z-.04,.003),cx,1.80,p.z));
+  add('Wardrobe_rail','furniture','metal',bar(V(cx,1.70,z0+.03),V(cx,1.70,z1-.03),.011,12));
+  const rand=rng(9),mats=['gray','oat','pillow','linen','gray','oat'];
+  for(let i=0;i<6;i++){const z=z0+.16+i*.165+(rand()-.5)*.02,len=.72+rand()*.32;add('Wardrobe_garment_'+i,'soft',mats[i],place(blob(.42,len,.035,{r:.35,pinch:.1}),cx,1.66-len/2,z));add('Wardrobe_hanger_'+i,'soft','wood',combine([place(new THREE.TorusGeometry(.20,.006,6,20,Math.PI*.8),cx,1.62,z,0,0,Math.PI*.1),place(new THREE.TorusGeometry(.016,.003,6,12,Math.PI*1.4),cx,1.715,z)]));}
+  for(const [dz,m]of [[.25,'oat'],[.62,'gray']])add('Wardrobe_folded','soft',m,combine([0,1,2].map(k=>place(rbox(.30,.045,.26,.012),cx,1.835+k*.047,z0+dz+(k%2)*.01))));}
+ const kc=get('Kitchen_cabinet');if(kc){const p=pos(kc),s=size(kc);add('Kitchen_cabinet_shelf','furniture','white',place(rbox(s.x-.04,.016,s.z-.07,.003),p.x,.44,p.z+.03));}
+ const va=get('Vanity');if(va){const p=pos(va),s=size(va);add('Vanity_shelf','furniture','white',place(rbox(s.x-.07,.016,s.z-.04,.003),p.x+.02,.40,p.z));}
+ const tb=get('Toilet_bowl');if(tb){const p=pos(tb);add('Toilet_water','furniture','glass',place(new THREE.CircleGeometry(1,28),p.x,p.y+.03,p.z-.01,-Math.PI/2,0,0,.085,.12,1));}
  return out;
 }
 

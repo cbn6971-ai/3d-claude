@@ -1,15 +1,20 @@
 // Inexpensive 2D circle against simplified rectangles; units are metres.
-export const PLAYER_RADIUS=.19;
+// 0.16 m: half of a ~0.42 m shoulder width with the shoulders slightly turned, so a
+// 0.50-0.60 m passage leaves 9-14 cm each side and a 0.35 m squeeze is still possible.
+export const PLAYER_RADIUS=.16;
 export const PLAYER_HEIGHT=1.75;
-export function createCollisionWorld(spec){
- const boxes=[],groups=new Map();
+// Walls/door leaves come from the exact structural parts. Furniture uses the simplified
+// collisionProxy boxes declared in the interaction configuration ({min:[x,y,z],max:[x,y,z]}),
+// never the visual bounding box. Without configs the v1 category envelopes are used.
+export function createCollisionWorld(spec,configs){
+ const boxes=[],groups=new Map(),proxies=(configs||[]).flatMap(c=>(c.collisionProxy||[]).map((p,i)=>({minX:p.min[0],minY:p.min[1],minZ:p.min[2],maxX:p.max[0],maxY:p.max[1],maxZ:p.max[2],name:c.id+'_proxy'+(p.name?'_'+p.name:i),objects:p.objects||c.object||[]})));
  const category=name=>['Bed_','Wardrobe_','Sofa_','Desk_','Coffee_','Chair_','Kitchen_cabinet','Kitchen_counter','Nightstand','Vanity','Toilet_'].find(p=>name.startsWith(p));
  function bounds(n){const [x,z,y]=n.position,[a,b,c]=n.size;const angle=n.rotation[2]||0;const sphere=n.shape==='sphere';const hx=(sphere?a:a/2),hz=(sphere?b:b/2);return {minX:x-Math.abs(Math.cos(angle))*hx-Math.abs(Math.sin(angle))*hz,maxX:x+Math.abs(Math.cos(angle))*hx+Math.abs(Math.sin(angle))*hz,minZ:z-Math.abs(Math.sin(angle))*hx-Math.abs(Math.cos(angle))*hz,maxZ:z+Math.abs(Math.sin(angle))*hx+Math.abs(Math.cos(angle))*hz,minY:y-(sphere?c:c/2),maxY:y+(sphere?c:c/2),name:n.name};}
  for(const n of spec.nodes){const b=bounds(n);if((n.wall||n.name==='Bath_slider_glass')&&b.minY<PLAYER_HEIGHT&&b.maxY>.12)boxes.push(b);
-  const key=n.layer==='furniture'&&category(n.name);if(!key||b.minY>PLAYER_HEIGHT)continue;
+  if(proxies.length)continue;const key=n.layer==='furniture'&&category(n.name);if(!key||b.minY>PLAYER_HEIGHT)continue;
   if(!groups.has(key))groups.set(key,{...b,name:key});else{const g=groups.get(key);for(const k of ['X','Y','Z']){g['min'+k]=Math.min(g['min'+k],b['min'+k]);g['max'+k]=Math.max(g['max'+k],b['max'+k]);}}
  }
- boxes.push(...groups.values());return {width:spec.derived.width,depth:spec.derived.total_depth,boxes};
+ boxes.push(...groups.values(),...proxies);return {width:spec.derived.width,depth:spec.derived.total_depth,boxes};
 }
 export function isWalkable(world,x,z,radius=PLAYER_RADIUS){
  if(x<radius||z<radius||x>world.width-radius||z>world.depth-radius)return false;
@@ -17,7 +22,12 @@ export function isWalkable(world,x,z,radius=PLAYER_RADIUS){
 }
 export function moveWithCollision(world,position,dx,dz,radius=PLAYER_RADIUS){
  const steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.04));let x=position.x,z=position.z;
- for(let i=0;i<steps;i++){const nx=x+dx/steps,nz=z+dz/steps;if(isWalkable(world,nx,nz,radius)){x=nx;z=nz;}else{if(isWalkable(world,nx,z,radius))x=nx;if(isWalkable(world,x,nz,radius))z=nz;}}
+ for(let i=0;i<steps;i++){const sx=dx/steps,sz=dz/steps,nx=x+sx,nz=z+sz;if(isWalkable(world,nx,nz,radius)){x=nx;z=nz;continue;}
+  const ox=x,oz=z;if(isWalkable(world,nx,z,radius))x=nx;if(isWalkable(world,x,nz,radius))z=nz;
+  // Corner slide: when the main axis is stopped by a box corner, nudge sideways (at most
+  // half the step) toward the free side so the player rounds corners into narrow gaps.
+  if(x===ox&&z===oz){const len=Math.hypot(sx,sz);if(len<1e-6)continue;const px=-sz/len,pz=sx/len;slide:for(const k of [1,-1])for(const f of [.35,.7]){const tx=ox+sx*.5+px*k*len*f,tz=oz+sz*.5+pz*k*len*f;if(isWalkable(world,tx,tz,radius)){x=tx;z=tz;break slide;}}}
+ }
  return {x,z};
 }
 export function cameraFraction(world,start,end){

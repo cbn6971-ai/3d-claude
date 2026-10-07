@@ -3,13 +3,14 @@ import {isWalkable,Walker} from './roam_physics.js';
 import {createInteractionConfig} from './interaction_config.js';
 import {buildInteractiveScene} from './interactive_scene.js';
 import {InteractionSystem} from './interaction_system.js';
+import {HandRig} from './first_person_hands.js';
 
 // One lazy, first-person controller. Viewer input is managed by its existing owner.
 export class RoamController {
  constructor({scene,camera,spec,interactionConfigs,modelDoc,wallClip,originalModel,hud,joystick,knob,lookZone,onWake,document:doc=document}){
   Object.assign(this,{scene,camera,spec,originalModel,hud,joystick,knob,lookZone,onWake,doc});this.configs=interactionConfigs||createInteractionConfig(spec);this.adapter=buildInteractiveScene(modelDoc,spec,wallClip,this.configs);scene.add(this.adapter.root);this.world=this.adapter.world;
   const candidates=[{x:1.2,z:spec.derived.bedroom_depth+1.1},{x:.65,z:spec.derived.bedroom_depth+1.4}],spawn=candidates.find(p=>isWalkable(this.world,p.x,p.z));if(!spawn)throw Error('客厅出生点没有足够空间');
-  this.walker=new Walker(this.world,spawn);this.interactions=new InteractionSystem({configs:this.configs,adapter:this.adapter,camera,walker:this.walker,onWake});this.active=false;this.input={x:0,y:0};this.keys=new Set();this.listeners=[];this.joystickId=null;this.lookId=null;this.lastTime=null;this.menuOpen=false;this.uiSignature='';
+  this.walker=new Walker(this.world,spawn);this.hands=new HandRig({adapter:this.adapter,camera});this.interactions=new InteractionSystem({configs:this.configs,adapter:this.adapter,camera,walker:this.walker,onWake,hands:this.hands});this.active=false;this.input={x:0,y:0};this.keys=new Set();this.listeners=[];this.joystickId=null;this.lookId=null;this.lastTime=null;this.menuOpen=false;this.uiSignature='';
   this.prompt=hud.querySelector('#interaction-prompt');this.button=hud.querySelector('#interaction-button');this.more=hud.querySelector('#interaction-more');this.choices=hud.querySelector('#interaction-choices');this.caption=hud.querySelector('#interaction-caption');this.sleepOverlay=hud.querySelector('#sleep-overlay');this.notice=hud.querySelector('#interaction-notice');this.promptAlpha=0;this.displayFocus=null;
  }
  get yaw(){return this.interactions.look.yaw;}get pitch(){return this.interactions.look.pitch;}
@@ -35,7 +36,7 @@ export class RoamController {
  renderUI(dt){const system=this.interactions,current=system.focus,changed=this.displayFocus?.config.id!==current?.config.id;
   const target=current&&!changed?1:0,step=dt/(target ? .18 : .12);this.promptAlpha=THREE.MathUtils.clamp(this.promptAlpha+(target?step:-step),0,1);
   if(changed&&this.promptAlpha===0){this.displayFocus=current;this.menuOpen=false;}
-  const focus=this.displayFocus,actions=system.available(focus?.config),busy=!!system.motion||system.animations.size>0,disabled=!!system.motion||changed||this.promptAlpha<.6||(system.animations.size>0&&actions[0]?.kind!=='toggle'),sig=JSON.stringify([focus?.config.id,actions.map(a=>[a.id,a.label]),busy,disabled,this.menuOpen,system.message]);
+  const focus=this.displayFocus,actions=system.available(focus?.config),busy=!!system.motion||system.animations.size>0,disabled=!!system.motion||changed||this.promptAlpha<.6||(system.animations.size>0&&!['toggle','set'].includes(actions[0]?.kind)),sig=JSON.stringify([focus?.config.id,actions.map(a=>[a.id,a.label]),busy,disabled,this.menuOpen,system.message]);
   this.prompt.style.opacity=String(this.promptAlpha);this.prompt.style.transform=`translateX(-50%) translateY(${(1-this.promptAlpha)*3}px)`;this.prompt.hidden=!focus||!actions.length;this.button.disabled=disabled;
   this.sleepOverlay.style.opacity=String(system.sleepAmount*.97);this.notice.textContent=system.message;this.notice.hidden=!system.message;if(sig!==this.uiSignature){this.uiSignature=sig;
   if(focus){this.caption.textContent=focus.config.label+(system.occupied?' · '+system.occupied.action.label:'');this.button.textContent=actions[0]?.label||'交互';this.more.hidden=actions.length<2||busy;this.choices.hidden=!this.menuOpen||busy;this.choices.replaceChildren();

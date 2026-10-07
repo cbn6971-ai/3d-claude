@@ -31,6 +31,6 @@
     "prompt fades and stays non-actionable while switching; interrupted animation resumes across roam exits",
     "actual contextual button stays enabled and reverses a moving door without a snap"
   ],
-  "interactionObjects": 32,
+  "interactionObjects": 41,
   "verification": "Executed real project configuration, Three.js runtime geometry, InteractionSystem, collision routes, camera paths and simulated Pointer Events in Node; no browser or physical iPhone execution"
 }

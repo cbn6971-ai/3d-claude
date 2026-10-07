@@ -1,0 +1,229 @@
+{
+  "version": "1.4.0",
+  "passed": true,
+  "checks": [
+    "every operable object declares hand pose, hand target, movable parts and state in its configuration",
+    "hand reaches and grips before the part moves, follows it, then releases and retracts",
+    "hand gesture type follows the object: pull, swing, slide, press, turn, lift",
+    "player keeps walking and turning while a drawer or door is opening",
+    "fixed postures still hold the player; standing up releases them",
+    "toilet lid and seat are separate hinged parts with valid order of operation",
+    "each hob burner has its own knob, ignites, steps low/medium/high and goes out",
+    "range hood switches on with light and indicator, and off again",
+    "drawers are complete boxes (bottom, sides, back) that slide out with their fronts",
+    "hands stay out of walls when the player faces a wall closely",
+    "idle hands are visible at the bottom of the portrait view and stay still when idle",
+    "collision proxies: player radius 0.16 m, 50-60 cm passages pass, narrow real gaps are reachable"
+  ],
+  "gestures": [
+    [
+      "toilet",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "wardrobe",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "wardrobe_right",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Desk_drawer_front",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Desk_drawer_front_01",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Desk_drawer_front_02",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Desk_drawer_front_03",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Desk_drawer_front_04",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Desk_drawer_front_05",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Nightstand_interactive_front0",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Nightstand_interactive_front1",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Kitchen_cabinet_interactive_front0",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Kitchen_cabinet_interactive_front1",
+      "grip",
+      0.003,
+      0
+    ],
+    [
+      "Vanity_interactive_front0",
+      "grip",
+      0.012,
+      0.0097
+    ],
+    [
+      "Vanity_interactive_front1",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "bath_door",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "entry_door",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "curtains",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "curtains_right",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "sheer",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "Desk_lamp",
+      "press",
+      null,
+      0
+    ],
+    [
+      "Bed_lamp",
+      "press",
+      null,
+      0
+    ],
+    [
+      "Floor_lamp",
+      "press",
+      null,
+      0
+    ],
+    [
+      "laptop",
+      "press",
+      null,
+      0
+    ],
+    [
+      "aircon",
+      "remote",
+      null,
+      0
+    ],
+    [
+      "hob_front",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "hob_back",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "range_hood",
+      "press",
+      null,
+      0
+    ],
+    [
+      "shower",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "living_window",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "bath_window",
+      "grip",
+      0,
+      0
+    ],
+    [
+      "balcony_window",
+      "grip",
+      0,
+      0.002
+    ]
+  ],
+  "flameScale": {
+    "hob_front": {
+      "low": 0.6045695786583304,
+      "high": 1.3772257666297394,
+      "medium": 0.913632053846894
+    },
+    "hob_back": {
+      "low": 0.5730057219033031,
+      "high": 1.3053224516900357,
+      "medium": 0.8659324138179961
+    }
+  },
+  "passages": {
+    "sofaTableLegacyR19": false,
+    "sofaTableNow": true
+  },
+  "verification": "Node with real Three.js geometry, the runtime configuration, InteractionSystem, HandRig IK and collision; no browser or physical iPhone execution"
+}

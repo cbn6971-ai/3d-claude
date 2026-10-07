@@ -13,8 +13,8 @@
     "merged geometry preserves bounds and clipping",
     "entry page needs no external startup assets or GLB replacement"
   ],
-  "drawBatches": 46,
+  "drawBatches": 47,
   "sourceParts": 244,
-  "htmlBytes": 736134,
+  "htmlBytes": 783556,
   "verification": "Node with real Three.js camera/math/geometry and synthetic Touch Events; no browser or physical iPhone execution"
 }
